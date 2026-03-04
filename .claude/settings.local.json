@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(/Users/gg/Development/infracost/cli-poc/bin/infracost:*)",
+      "Bash(/Users/gg/Development/infracost/cli-poc/bin/infracost version:*)",
+      "Bash(# Get a sample resource detail for tagging policy /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\" --resource \"\"aws_acm_certificate.main\"\")"
+    ]
+  }
+}
