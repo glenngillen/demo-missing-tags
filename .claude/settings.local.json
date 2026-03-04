@@ -5,7 +5,14 @@
       "Bash(grep:*)",
       "Bash(/Users/gg/Development/infracost/cli-poc/bin/infracost:*)",
       "Bash(/Users/gg/Development/infracost/cli-poc/bin/infracost version:*)",
-      "Bash(# Get a sample resource detail for tagging policy /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\" --resource \"\"aws_acm_certificate.main\"\")"
+      "Bash(# Get a sample resource detail for tagging policy /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\" --resource \"\"aws_acm_certificate.main\"\")",
+      "Bash(# Sample resources across different files to understand the issue patterns for resource in \"\"aws_acm_certificate.main\"\" \"\"aws_vpc.main[\\\\\"\"prod\\\\\"\"]\"\" \"\"aws_ecs_service.microservices[\\\\\"\"prod-catalog\\\\\"\"]\"\" \"\"aws_lambda_function.main[\\\\\"\"process-order\\\\\"\"]\"\" \"\"aws_cloudwatch_log_group.ecs[\\\\\"\"prod-api-gateway\\\\\"\"]\"\"; do echo \"\"=== $resource ===\"\" /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\" --resource \"\"$resource\"\")",
+      "Bash(done)",
+      "Bash(# Check resources that might have partial tags \\(only 1-2 issues\\) /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\")",
+      "Bash(# Get the breakdown of violations by file to understand scope per module /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\")",
+      "Bash(# Count total unique resources \\(not instances\\) to understand scope of changes needed /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\")",
+      "Bash(# Get unique resource types with violations /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\")",
+      "Bash(# Get the cdn.tf resources since only 3 there - these might have partial tags that explain \"\"Invalid\"\" vs \"\"Missing\"\" /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\")"
     ]
   }
 }
