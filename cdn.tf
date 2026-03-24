@@ -106,7 +106,7 @@ resource "aws_cloudfront_distribution" "main" {
   web_acl_id          = aws_wafv2_web_acl.cdn.arn
 
   origin {
-    domain_name              = aws_s3_bucket.app["static-assets"].bucket_regional_domain_name
+    domain_name              = aws_s3_bucket.static_assets.bucket_regional_domain_name
     origin_id                = "S3-static-assets"
     origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
   }
@@ -190,6 +190,7 @@ resource "aws_cloudfront_distribution" "main" {
     bucket          = aws_s3_bucket.infra["access-logs"].bucket_domain_name
     prefix          = "cloudfront/main/"
   }
+
 }
 
 # Static assets CDN distribution
@@ -201,13 +202,13 @@ resource "aws_cloudfront_distribution" "static" {
   aliases         = ["static.example.com", "cdn.example.com"]
 
   origin {
-    domain_name              = aws_s3_bucket.app["media"].bucket_regional_domain_name
+    domain_name              = aws_s3_bucket.media.bucket_regional_domain_name
     origin_id                = "S3-media"
     origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
   }
 
   origin {
-    domain_name              = aws_s3_bucket.app["product-images"].bucket_regional_domain_name
+    domain_name              = aws_s3_bucket.product_images.bucket_regional_domain_name
     origin_id                = "S3-product-images"
     origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
   }
@@ -261,7 +262,7 @@ resource "aws_cloudfront_distribution" "admin" {
   aliases         = ["admin.example.com"]
 
   origin {
-    domain_name              = aws_s3_bucket.app["static-assets"].bucket_regional_domain_name
+    domain_name              = aws_s3_bucket.static_assets.bucket_regional_domain_name
     origin_id                = "S3-admin"
     origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
   }
@@ -309,4 +310,5 @@ resource "aws_cloudfront_distribution" "admin" {
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
+
 }

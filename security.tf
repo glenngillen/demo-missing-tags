@@ -535,18 +535,8 @@ resource "aws_iam_role_policy_attachment" "ecs_execution_ssm" {
 }
 
 # ECS Task Roles per microservice
-resource "aws_iam_role" "ecs_task" {
-  for_each           = toset(var.microservices)
-  name               = "ecs-task-${each.key}"
-  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-}
-
-resource "aws_iam_policy" "ecs_task_base" {
-  for_each    = toset(var.microservices)
-  name        = "ecs-task-${each.key}-base"
-  description = "Base policy for ${each.key} ECS task"
-
-  policy = jsonencode({
+locals {
+  ecs_task_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
@@ -571,9 +561,7 @@ resource "aws_iam_policy" "ecs_task_base" {
       },
       {
         Effect = "Allow"
-        Action = [
-          "sns:Publish"
-        ]
+        Action = ["sns:Publish"]
         Resource = "*"
       },
       {
@@ -600,31 +588,113 @@ resource "aws_iam_policy" "ecs_task_base" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_task_base" {
-  for_each   = toset(var.microservices)
-  role       = aws_iam_role.ecs_task[each.key].name
-  policy_arn = aws_iam_policy.ecs_task_base[each.key].arn
+resource "aws_iam_role" "ecs_task_api_gateway" {
+  name               = "ecs-task-api-gateway"
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+}
+resource "aws_iam_policy" "ecs_task_base_api_gateway" {
+  name   = "ecs-task-api-gateway-base"
+  policy = local.ecs_task_policy
+}
+resource "aws_iam_role_policy_attachment" "ecs_task_base_api_gateway" {
+  role       = aws_iam_role.ecs_task_api_gateway.name
+  policy_arn = aws_iam_policy.ecs_task_base_api_gateway.arn
+}
+
+resource "aws_iam_role" "ecs_task_user_service" {
+  name               = "ecs-task-user-service"
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+}
+resource "aws_iam_policy" "ecs_task_base_user_service" {
+  name   = "ecs-task-user-service-base"
+  policy = local.ecs_task_policy
+}
+resource "aws_iam_role_policy_attachment" "ecs_task_base_user_service" {
+  role       = aws_iam_role.ecs_task_user_service.name
+  policy_arn = aws_iam_policy.ecs_task_base_user_service.arn
+}
+
+resource "aws_iam_role" "ecs_task_order_service" {
+  name               = "ecs-task-order-service"
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+}
+resource "aws_iam_policy" "ecs_task_base_order_service" {
+  name   = "ecs-task-order-service-base"
+  policy = local.ecs_task_policy
+}
+resource "aws_iam_role_policy_attachment" "ecs_task_base_order_service" {
+  role       = aws_iam_role.ecs_task_order_service.name
+  policy_arn = aws_iam_policy.ecs_task_base_order_service.arn
+}
+
+resource "aws_iam_role" "ecs_task_payment_service" {
+  name               = "ecs-task-payment-service"
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+}
+resource "aws_iam_policy" "ecs_task_base_payment_service" {
+  name   = "ecs-task-payment-service-base"
+  policy = local.ecs_task_policy
+}
+resource "aws_iam_role_policy_attachment" "ecs_task_base_payment_service" {
+  role       = aws_iam_role.ecs_task_payment_service.name
+  policy_arn = aws_iam_policy.ecs_task_base_payment_service.arn
+}
+
+resource "aws_iam_role" "ecs_task_inventory_service" {
+  name               = "ecs-task-inventory-service"
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+}
+resource "aws_iam_policy" "ecs_task_base_inventory_service" {
+  name   = "ecs-task-inventory-service-base"
+  policy = local.ecs_task_policy
+}
+resource "aws_iam_role_policy_attachment" "ecs_task_base_inventory_service" {
+  role       = aws_iam_role.ecs_task_inventory_service.name
+  policy_arn = aws_iam_policy.ecs_task_base_inventory_service.arn
+}
+
+resource "aws_iam_role" "ecs_task_notification_service" {
+  name               = "ecs-task-notification-service"
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+}
+resource "aws_iam_policy" "ecs_task_base_notification_service" {
+  name   = "ecs-task-notification-service-base"
+  policy = local.ecs_task_policy
+}
+resource "aws_iam_role_policy_attachment" "ecs_task_base_notification_service" {
+  role       = aws_iam_role.ecs_task_notification_service.name
+  policy_arn = aws_iam_policy.ecs_task_base_notification_service.arn
+}
+
+resource "aws_iam_role" "ecs_task_catalog_service" {
+  name               = "ecs-task-catalog-service"
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+}
+resource "aws_iam_policy" "ecs_task_base_catalog_service" {
+  name   = "ecs-task-catalog-service-base"
+  policy = local.ecs_task_policy
+}
+resource "aws_iam_role_policy_attachment" "ecs_task_base_catalog_service" {
+  role       = aws_iam_role.ecs_task_catalog_service.name
+  policy_arn = aws_iam_policy.ecs_task_base_catalog_service.arn
+}
+
+resource "aws_iam_role" "ecs_task_search_service" {
+  name               = "ecs-task-search-service"
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
+}
+resource "aws_iam_policy" "ecs_task_base_search_service" {
+  name   = "ecs-task-search-service-base"
+  policy = local.ecs_task_policy
+}
+resource "aws_iam_role_policy_attachment" "ecs_task_base_search_service" {
+  role       = aws_iam_role.ecs_task_search_service.name
+  policy_arn = aws_iam_policy.ecs_task_base_search_service.arn
 }
 
 # Lambda Roles
-resource "aws_iam_role" "lambda" {
-  for_each           = toset(var.lambda_functions)
-  name               = "lambda-${each.key}"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_basic" {
-  for_each   = toset(var.lambda_functions)
-  role       = aws_iam_role.lambda[each.key].name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
-}
-
-resource "aws_iam_policy" "lambda_base" {
-  for_each    = toset(var.lambda_functions)
-  name        = "lambda-${each.key}-base"
-  description = "Base policy for ${each.key} Lambda"
-
-  policy = jsonencode({
+locals {
+  lambda_base_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
@@ -652,10 +722,259 @@ resource "aws_iam_policy" "lambda_base" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_base" {
-  for_each   = toset(var.lambda_functions)
-  role       = aws_iam_role.lambda[each.key].name
-  policy_arn = aws_iam_policy.lambda_base[each.key].arn
+resource "aws_iam_role" "lambda_process_order" {
+  name               = "lambda-process-order"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_process_order" {
+  role       = aws_iam_role.lambda_process_order.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_process_order" {
+  name   = "lambda-process-order-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_process_order" {
+  role       = aws_iam_role.lambda_process_order.name
+  policy_arn = aws_iam_policy.lambda_base_process_order.arn
+}
+
+resource "aws_iam_role" "lambda_send_email" {
+  name               = "lambda-send-email"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_send_email" {
+  role       = aws_iam_role.lambda_send_email.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_send_email" {
+  name   = "lambda-send-email-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_send_email" {
+  role       = aws_iam_role.lambda_send_email.name
+  policy_arn = aws_iam_policy.lambda_base_send_email.arn
+}
+
+resource "aws_iam_role" "lambda_resize_image" {
+  name               = "lambda-resize-image"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_resize_image" {
+  role       = aws_iam_role.lambda_resize_image.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_resize_image" {
+  name   = "lambda-resize-image-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_resize_image" {
+  role       = aws_iam_role.lambda_resize_image.name
+  policy_arn = aws_iam_policy.lambda_base_resize_image.arn
+}
+
+resource "aws_iam_role" "lambda_validate_payment" {
+  name               = "lambda-validate-payment"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_validate_payment" {
+  role       = aws_iam_role.lambda_validate_payment.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_validate_payment" {
+  name   = "lambda-validate-payment-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_validate_payment" {
+  role       = aws_iam_role.lambda_validate_payment.name
+  policy_arn = aws_iam_policy.lambda_base_validate_payment.arn
+}
+
+resource "aws_iam_role" "lambda_sync_inventory" {
+  name               = "lambda-sync-inventory"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_sync_inventory" {
+  role       = aws_iam_role.lambda_sync_inventory.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_sync_inventory" {
+  name   = "lambda-sync-inventory-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_sync_inventory" {
+  role       = aws_iam_role.lambda_sync_inventory.name
+  policy_arn = aws_iam_policy.lambda_base_sync_inventory.arn
+}
+
+resource "aws_iam_role" "lambda_generate_report" {
+  name               = "lambda-generate-report"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_generate_report" {
+  role       = aws_iam_role.lambda_generate_report.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_generate_report" {
+  name   = "lambda-generate-report-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_generate_report" {
+  role       = aws_iam_role.lambda_generate_report.name
+  policy_arn = aws_iam_policy.lambda_base_generate_report.arn
+}
+
+resource "aws_iam_role" "lambda_cleanup_sessions" {
+  name               = "lambda-cleanup-sessions"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_cleanup_sessions" {
+  role       = aws_iam_role.lambda_cleanup_sessions.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_cleanup_sessions" {
+  name   = "lambda-cleanup-sessions-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_cleanup_sessions" {
+  role       = aws_iam_role.lambda_cleanup_sessions.name
+  policy_arn = aws_iam_policy.lambda_base_cleanup_sessions.arn
+}
+
+resource "aws_iam_role" "lambda_data_transformer" {
+  name               = "lambda-data-transformer"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_data_transformer" {
+  role       = aws_iam_role.lambda_data_transformer.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_data_transformer" {
+  name   = "lambda-data-transformer-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_data_transformer" {
+  role       = aws_iam_role.lambda_data_transformer.name
+  policy_arn = aws_iam_policy.lambda_base_data_transformer.arn
+}
+
+resource "aws_iam_role" "lambda_notification_sender" {
+  name               = "lambda-notification-sender"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_notification_sender" {
+  role       = aws_iam_role.lambda_notification_sender.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_notification_sender" {
+  name   = "lambda-notification-sender-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_notification_sender" {
+  role       = aws_iam_role.lambda_notification_sender.name
+  policy_arn = aws_iam_policy.lambda_base_notification_sender.arn
+}
+
+resource "aws_iam_role" "lambda_cache_warmer" {
+  name               = "lambda-cache-warmer"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_cache_warmer" {
+  role       = aws_iam_role.lambda_cache_warmer.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_cache_warmer" {
+  name   = "lambda-cache-warmer-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_cache_warmer" {
+  role       = aws_iam_role.lambda_cache_warmer.name
+  policy_arn = aws_iam_policy.lambda_base_cache_warmer.arn
+}
+
+resource "aws_iam_role" "lambda_batch_processor" {
+  name               = "lambda-batch-processor"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_batch_processor" {
+  role       = aws_iam_role.lambda_batch_processor.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_batch_processor" {
+  name   = "lambda-batch-processor-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_batch_processor" {
+  role       = aws_iam_role.lambda_batch_processor.name
+  policy_arn = aws_iam_policy.lambda_base_batch_processor.arn
+}
+
+resource "aws_iam_role" "lambda_stream_consumer" {
+  name               = "lambda-stream-consumer"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_stream_consumer" {
+  role       = aws_iam_role.lambda_stream_consumer.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_stream_consumer" {
+  name   = "lambda-stream-consumer-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_stream_consumer" {
+  role       = aws_iam_role.lambda_stream_consumer.name
+  policy_arn = aws_iam_policy.lambda_base_stream_consumer.arn
+}
+
+resource "aws_iam_role" "lambda_api_authorizer" {
+  name               = "lambda-api-authorizer"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_api_authorizer" {
+  role       = aws_iam_role.lambda_api_authorizer.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_api_authorizer" {
+  name   = "lambda-api-authorizer-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_api_authorizer" {
+  role       = aws_iam_role.lambda_api_authorizer.name
+  policy_arn = aws_iam_policy.lambda_base_api_authorizer.arn
+}
+
+resource "aws_iam_role" "lambda_migrate_data" {
+  name               = "lambda-migrate-data"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_migrate_data" {
+  role       = aws_iam_role.lambda_migrate_data.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_migrate_data" {
+  name   = "lambda-migrate-data-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_migrate_data" {
+  role       = aws_iam_role.lambda_migrate_data.name
+  policy_arn = aws_iam_policy.lambda_base_migrate_data.arn
+}
+
+resource "aws_iam_role" "lambda_archive_records" {
+  name               = "lambda-archive-records"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+resource "aws_iam_role_policy_attachment" "lambda_basic_archive_records" {
+  role       = aws_iam_role.lambda_archive_records.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+resource "aws_iam_policy" "lambda_base_archive_records" {
+  name   = "lambda-archive-records-base"
+  policy = local.lambda_base_policy
+}
+resource "aws_iam_role_policy_attachment" "lambda_base_archive_records" {
+  role       = aws_iam_role.lambda_archive_records.name
+  policy_arn = aws_iam_policy.lambda_base_archive_records.arn
 }
 
 # EC2 Instance Profile
@@ -712,18 +1031,8 @@ resource "aws_iam_role_policy_attachment" "flow_logs" {
 }
 
 # CodeBuild Role
-resource "aws_iam_role" "codebuild" {
-  for_each           = toset(var.microservices)
-  name               = "codebuild-${each.key}"
-  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
-}
-
-resource "aws_iam_policy" "codebuild" {
-  for_each    = toset(var.microservices)
-  name        = "codebuild-${each.key}-policy"
-  description = "CodeBuild policy for ${each.key}"
-
-  policy = jsonencode({
+locals {
+  codebuild_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
@@ -750,10 +1059,108 @@ resource "aws_iam_policy" "codebuild" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "codebuild" {
-  for_each   = toset(var.microservices)
-  role       = aws_iam_role.codebuild[each.key].name
-  policy_arn = aws_iam_policy.codebuild[each.key].arn
+resource "aws_iam_role" "codebuild_api_gateway" {
+  name               = "codebuild-api-gateway"
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
+}
+resource "aws_iam_policy" "codebuild_api_gateway" {
+  name   = "codebuild-api-gateway-policy"
+  policy = local.codebuild_policy
+}
+resource "aws_iam_role_policy_attachment" "codebuild_api_gateway" {
+  role       = aws_iam_role.codebuild_api_gateway.name
+  policy_arn = aws_iam_policy.codebuild_api_gateway.arn
+}
+
+resource "aws_iam_role" "codebuild_user_service" {
+  name               = "codebuild-user-service"
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
+}
+resource "aws_iam_policy" "codebuild_user_service" {
+  name   = "codebuild-user-service-policy"
+  policy = local.codebuild_policy
+}
+resource "aws_iam_role_policy_attachment" "codebuild_user_service" {
+  role       = aws_iam_role.codebuild_user_service.name
+  policy_arn = aws_iam_policy.codebuild_user_service.arn
+}
+
+resource "aws_iam_role" "codebuild_order_service" {
+  name               = "codebuild-order-service"
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
+}
+resource "aws_iam_policy" "codebuild_order_service" {
+  name   = "codebuild-order-service-policy"
+  policy = local.codebuild_policy
+}
+resource "aws_iam_role_policy_attachment" "codebuild_order_service" {
+  role       = aws_iam_role.codebuild_order_service.name
+  policy_arn = aws_iam_policy.codebuild_order_service.arn
+}
+
+resource "aws_iam_role" "codebuild_payment_service" {
+  name               = "codebuild-payment-service"
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
+}
+resource "aws_iam_policy" "codebuild_payment_service" {
+  name   = "codebuild-payment-service-policy"
+  policy = local.codebuild_policy
+}
+resource "aws_iam_role_policy_attachment" "codebuild_payment_service" {
+  role       = aws_iam_role.codebuild_payment_service.name
+  policy_arn = aws_iam_policy.codebuild_payment_service.arn
+}
+
+resource "aws_iam_role" "codebuild_inventory_service" {
+  name               = "codebuild-inventory-service"
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
+}
+resource "aws_iam_policy" "codebuild_inventory_service" {
+  name   = "codebuild-inventory-service-policy"
+  policy = local.codebuild_policy
+}
+resource "aws_iam_role_policy_attachment" "codebuild_inventory_service" {
+  role       = aws_iam_role.codebuild_inventory_service.name
+  policy_arn = aws_iam_policy.codebuild_inventory_service.arn
+}
+
+resource "aws_iam_role" "codebuild_notification_service" {
+  name               = "codebuild-notification-service"
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
+}
+resource "aws_iam_policy" "codebuild_notification_service" {
+  name   = "codebuild-notification-service-policy"
+  policy = local.codebuild_policy
+}
+resource "aws_iam_role_policy_attachment" "codebuild_notification_service" {
+  role       = aws_iam_role.codebuild_notification_service.name
+  policy_arn = aws_iam_policy.codebuild_notification_service.arn
+}
+
+resource "aws_iam_role" "codebuild_catalog_service" {
+  name               = "codebuild-catalog-service"
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
+}
+resource "aws_iam_policy" "codebuild_catalog_service" {
+  name   = "codebuild-catalog-service-policy"
+  policy = local.codebuild_policy
+}
+resource "aws_iam_role_policy_attachment" "codebuild_catalog_service" {
+  role       = aws_iam_role.codebuild_catalog_service.name
+  policy_arn = aws_iam_policy.codebuild_catalog_service.arn
+}
+
+resource "aws_iam_role" "codebuild_search_service" {
+  name               = "codebuild-search-service"
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
+}
+resource "aws_iam_policy" "codebuild_search_service" {
+  name   = "codebuild-search-service-policy"
+  policy = local.codebuild_policy
+}
+resource "aws_iam_role_policy_attachment" "codebuild_search_service" {
+  role       = aws_iam_role.codebuild_search_service.name
+  policy_arn = aws_iam_policy.codebuild_search_service.arn
 }
 
 # CodePipeline Role

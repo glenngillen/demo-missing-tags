@@ -2,12 +2,14 @@
 # CloudWatch Log Groups
 # ============================================================
 
-resource "aws_cloudwatch_log_group" "ecs" {
-  for_each          = toset(var.microservices)
-  name              = "/ecs/${each.key}"
-  retention_in_days = 30
-  kms_key_id        = aws_kms_key.cloudwatch.arn
-}
+resource "aws_cloudwatch_log_group" "ecs_api_gateway"        { name = "/ecs/api-gateway";        retention_in_days = 30; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "ecs_user_service"        { name = "/ecs/user-service";        retention_in_days = 30; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "ecs_order_service"       { name = "/ecs/order-service";       retention_in_days = 30; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "ecs_payment_service"     { name = "/ecs/payment-service";     retention_in_days = 30; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "ecs_inventory_service"   { name = "/ecs/inventory-service";   retention_in_days = 30; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "ecs_notification_service"{ name = "/ecs/notification-service";retention_in_days = 30; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "ecs_catalog_service"     { name = "/ecs/catalog-service";     retention_in_days = 30; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "ecs_search_service"      { name = "/ecs/search-service";      retention_in_days = 30; kms_key_id = aws_kms_key.cloudwatch.arn }
 
 resource "aws_cloudwatch_log_group" "ecs_exec" {
   for_each          = toset(var.environments)
@@ -16,12 +18,21 @@ resource "aws_cloudwatch_log_group" "ecs_exec" {
   kms_key_id        = aws_kms_key.cloudwatch.arn
 }
 
-resource "aws_cloudwatch_log_group" "lambda" {
-  for_each          = toset(var.lambda_functions)
-  name              = "/aws/lambda/${each.key}"
-  retention_in_days = 14
-  kms_key_id        = aws_kms_key.cloudwatch.arn
-}
+resource "aws_cloudwatch_log_group" "lambda_process_order"      { name = "/aws/lambda/process-order";       retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_send_email"         { name = "/aws/lambda/send-email";          retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_resize_image"       { name = "/aws/lambda/resize-image";        retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_validate_payment"   { name = "/aws/lambda/validate-payment";    retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_sync_inventory"     { name = "/aws/lambda/sync-inventory";      retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_generate_report"    { name = "/aws/lambda/generate-report";     retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_cleanup_sessions"   { name = "/aws/lambda/cleanup-sessions";    retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_data_transformer"   { name = "/aws/lambda/data-transformer";    retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_notification_sender"{ name = "/aws/lambda/notification-sender"; retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_cache_warmer"       { name = "/aws/lambda/cache-warmer";        retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_batch_processor"    { name = "/aws/lambda/batch-processor";     retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_stream_consumer"    { name = "/aws/lambda/stream-consumer";     retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_api_authorizer"     { name = "/aws/lambda/api-authorizer";      retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_migrate_data"       { name = "/aws/lambda/migrate-data";        retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "lambda_archive_records"    { name = "/aws/lambda/archive-records";     retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
 
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
   for_each          = toset(var.environments)
@@ -57,12 +68,14 @@ resource "aws_cloudwatch_log_group" "api_gateway" {
   kms_key_id        = aws_kms_key.cloudwatch.arn
 }
 
-resource "aws_cloudwatch_log_group" "codebuild" {
-  for_each          = toset(var.microservices)
-  name              = "/aws/codebuild/${each.key}"
-  retention_in_days = 14
-  kms_key_id        = aws_kms_key.cloudwatch.arn
-}
+resource "aws_cloudwatch_log_group" "codebuild_api_gateway"        { name = "/aws/codebuild/api-gateway";        retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "codebuild_user_service"        { name = "/aws/codebuild/user-service";        retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "codebuild_order_service"       { name = "/aws/codebuild/order-service";       retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "codebuild_payment_service"     { name = "/aws/codebuild/payment-service";     retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "codebuild_inventory_service"   { name = "/aws/codebuild/inventory-service";   retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "codebuild_notification_service"{ name = "/aws/codebuild/notification-service";retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "codebuild_catalog_service"     { name = "/aws/codebuild/catalog-service";     retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
+resource "aws_cloudwatch_log_group" "codebuild_search_service"      { name = "/aws/codebuild/search-service";      retention_in_days = 14; kms_key_id = aws_kms_key.cloudwatch.arn }
 
 resource "aws_cloudwatch_log_group" "opensearch" {
   for_each          = toset(["prod", "staging"])
@@ -265,43 +278,27 @@ resource "aws_cloudwatch_metric_alarm" "redis_evictions" {
 # CloudWatch Metric Alarms — ECS
 # ============================================================
 
-resource "aws_cloudwatch_metric_alarm" "ecs_cpu" {
-  for_each            = toset(var.microservices)
-  alarm_name          = "prod-${each.key}-ecs-cpu-high"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 3
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/ECS"
-  period              = 300
-  statistic           = "Average"
-  threshold           = 85
-
-  dimensions = {
-    ClusterName = aws_ecs_cluster.main["prod"].name
-    ServiceName = each.key
-  }
-
-  alarm_actions = [aws_sns_topic.main["alerts"].arn]
+locals {
+  ecs_prod_cluster = aws_ecs_cluster.main["prod"].name
 }
 
-resource "aws_cloudwatch_metric_alarm" "ecs_memory" {
-  for_each            = toset(var.microservices)
-  alarm_name          = "prod-${each.key}-ecs-memory-high"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 3
-  metric_name         = "MemoryUtilization"
-  namespace           = "AWS/ECS"
-  period              = 300
-  statistic           = "Average"
-  threshold           = 85
+resource "aws_cloudwatch_metric_alarm" "ecs_cpu_api_gateway"        { alarm_name = "prod-api-gateway-ecs-cpu-high";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "CPUUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "api-gateway" };        alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_cpu_user_service"        { alarm_name = "prod-user-service-ecs-cpu-high";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "CPUUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "user-service" };        alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_cpu_order_service"       { alarm_name = "prod-order-service-ecs-cpu-high";       comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "CPUUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "order-service" };       alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_cpu_payment_service"     { alarm_name = "prod-payment-service-ecs-cpu-high";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "CPUUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "payment-service" };     alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_cpu_inventory_service"   { alarm_name = "prod-inventory-service-ecs-cpu-high";   comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "CPUUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "inventory-service" };   alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_cpu_notification_service"{ alarm_name = "prod-notification-service-ecs-cpu-high"; comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "CPUUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "notification-service" }; alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_cpu_catalog_service"     { alarm_name = "prod-catalog-service-ecs-cpu-high";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "CPUUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "catalog-service" };     alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_cpu_search_service"      { alarm_name = "prod-search-service-ecs-cpu-high";      comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "CPUUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "search-service" };      alarm_actions = [aws_sns_topic.main["alerts"].arn] }
 
-  dimensions = {
-    ClusterName = aws_ecs_cluster.main["prod"].name
-    ServiceName = each.key
-  }
-
-  alarm_actions = [aws_sns_topic.main["alerts"].arn]
-}
+resource "aws_cloudwatch_metric_alarm" "ecs_memory_api_gateway"        { alarm_name = "prod-api-gateway-ecs-memory-high";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "MemoryUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "api-gateway" };        alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_memory_user_service"        { alarm_name = "prod-user-service-ecs-memory-high";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "MemoryUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "user-service" };        alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_memory_order_service"       { alarm_name = "prod-order-service-ecs-memory-high";       comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "MemoryUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "order-service" };       alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_memory_payment_service"     { alarm_name = "prod-payment-service-ecs-memory-high";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "MemoryUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "payment-service" };     alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_memory_inventory_service"   { alarm_name = "prod-inventory-service-ecs-memory-high";   comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "MemoryUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "inventory-service" };   alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_memory_notification_service"{ alarm_name = "prod-notification-service-ecs-memory-high"; comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "MemoryUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "notification-service" }; alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_memory_catalog_service"     { alarm_name = "prod-catalog-service-ecs-memory-high";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "MemoryUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "catalog-service" };     alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "ecs_memory_search_service"      { alarm_name = "prod-search-service-ecs-memory-high";      comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "MemoryUtilization"; namespace = "AWS/ECS"; period = 300; statistic = "Average"; threshold = 85; dimensions = { ClusterName = local.ecs_prod_cluster; ServiceName = "search-service" };      alarm_actions = [aws_sns_topic.main["alerts"].arn] }
 
 # ============================================================
 # CloudWatch Metric Alarms — ALB
@@ -367,99 +364,66 @@ resource "aws_cloudwatch_metric_alarm" "alb_healthy_hosts" {
 # CloudWatch Metric Alarms — Lambda
 # ============================================================
 
-resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
-  for_each            = toset(var.lambda_functions)
-  alarm_name          = "${each.key}-lambda-errors"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 2
-  metric_name         = "Errors"
-  namespace           = "AWS/Lambda"
-  period              = 300
-  statistic           = "Sum"
-  threshold           = 10
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_process_order"      { alarm_name = "process-order-lambda-errors";       comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.process_order.function_name };      alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_send_email"         { alarm_name = "send-email-lambda-errors";          comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.send_email.function_name };         alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_resize_image"       { alarm_name = "resize-image-lambda-errors";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.resize_image.function_name };       alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_validate_payment"   { alarm_name = "validate-payment-lambda-errors";    comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.validate_payment.function_name };   alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_sync_inventory"     { alarm_name = "sync-inventory-lambda-errors";      comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.sync_inventory.function_name };     alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_generate_report"    { alarm_name = "generate-report-lambda-errors";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.generate_report.function_name };    alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_cleanup_sessions"   { alarm_name = "cleanup-sessions-lambda-errors";    comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.cleanup_sessions.function_name };   alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_data_transformer"   { alarm_name = "data-transformer-lambda-errors";    comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.data_transformer.function_name };   alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_notification_sender"{ alarm_name = "notification-sender-lambda-errors"; comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.notification_sender.function_name }; alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_cache_warmer"       { alarm_name = "cache-warmer-lambda-errors";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.cache_warmer.function_name };       alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_batch_processor"    { alarm_name = "batch-processor-lambda-errors";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.batch_processor.function_name };    alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_stream_consumer"    { alarm_name = "stream-consumer-lambda-errors";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.stream_consumer.function_name };    alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_api_authorizer"     { alarm_name = "api-authorizer-lambda-errors";      comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.api_authorizer.function_name };     alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_migrate_data"       { alarm_name = "migrate-data-lambda-errors";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.migrate_data.function_name };       alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_errors_archive_records"    { alarm_name = "archive-records-lambda-errors";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Errors"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 10; dimensions = { FunctionName = aws_lambda_function.archive_records.function_name };    alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
 
-  dimensions = {
-    FunctionName = aws_lambda_function.main[each.key].function_name
-  }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_process_order"      { alarm_name = "process-order-lambda-throttles";       comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.process_order.function_name };      alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_send_email"         { alarm_name = "send-email-lambda-throttles";          comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.send_email.function_name };         alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_resize_image"       { alarm_name = "resize-image-lambda-throttles";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.resize_image.function_name };       alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_validate_payment"   { alarm_name = "validate-payment-lambda-throttles";    comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.validate_payment.function_name };   alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_sync_inventory"     { alarm_name = "sync-inventory-lambda-throttles";      comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.sync_inventory.function_name };     alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_generate_report"    { alarm_name = "generate-report-lambda-throttles";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.generate_report.function_name };    alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_cleanup_sessions"   { alarm_name = "cleanup-sessions-lambda-throttles";    comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.cleanup_sessions.function_name };   alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_data_transformer"   { alarm_name = "data-transformer-lambda-throttles";    comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.data_transformer.function_name };   alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_notification_sender"{ alarm_name = "notification-sender-lambda-throttles"; comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.notification_sender.function_name }; alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_cache_warmer"       { alarm_name = "cache-warmer-lambda-throttles";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.cache_warmer.function_name };       alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_batch_processor"    { alarm_name = "batch-processor-lambda-throttles";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.batch_processor.function_name };    alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_stream_consumer"    { alarm_name = "stream-consumer-lambda-throttles";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.stream_consumer.function_name };    alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_api_authorizer"     { alarm_name = "api-authorizer-lambda-throttles";      comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.api_authorizer.function_name };     alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_migrate_data"       { alarm_name = "migrate-data-lambda-throttles";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.migrate_data.function_name };       alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles_archive_records"    { alarm_name = "archive-records-lambda-throttles";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "Throttles"; namespace = "AWS/Lambda"; period = 300; statistic = "Sum"; threshold = 100; dimensions = { FunctionName = aws_lambda_function.archive_records.function_name };    alarm_actions = [aws_sns_topic.main["alerts"].arn] }
 
-  alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-}
-
-resource "aws_cloudwatch_metric_alarm" "lambda_throttles" {
-  for_each            = toset(var.lambda_functions)
-  alarm_name          = "${each.key}-lambda-throttles"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 2
-  metric_name         = "Throttles"
-  namespace           = "AWS/Lambda"
-  period              = 300
-  statistic           = "Sum"
-  threshold           = 100
-
-  dimensions = {
-    FunctionName = aws_lambda_function.main[each.key].function_name
-  }
-
-  alarm_actions = [aws_sns_topic.main["alerts"].arn]
-}
-
-resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
-  for_each            = toset(var.lambda_functions)
-  alarm_name          = "${each.key}-lambda-duration"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 3
-  metric_name         = "Duration"
-  namespace           = "AWS/Lambda"
-  period              = 300
-  extended_statistic  = "p99"
-  threshold           = 25000  # 25 seconds
-
-  dimensions = {
-    FunctionName = aws_lambda_function.main[each.key].function_name
-  }
-
-  alarm_actions = [aws_sns_topic.main["alerts"].arn]
-}
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_process_order"      { alarm_name = "process-order-lambda-duration";       comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.process_order.function_name };      alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_send_email"         { alarm_name = "send-email-lambda-duration";          comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.send_email.function_name };         alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_resize_image"       { alarm_name = "resize-image-lambda-duration";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.resize_image.function_name };       alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_validate_payment"   { alarm_name = "validate-payment-lambda-duration";    comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.validate_payment.function_name };   alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_sync_inventory"     { alarm_name = "sync-inventory-lambda-duration";      comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.sync_inventory.function_name };     alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_generate_report"    { alarm_name = "generate-report-lambda-duration";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.generate_report.function_name };    alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_cleanup_sessions"   { alarm_name = "cleanup-sessions-lambda-duration";    comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.cleanup_sessions.function_name };   alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_data_transformer"   { alarm_name = "data-transformer-lambda-duration";    comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.data_transformer.function_name };   alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_notification_sender"{ alarm_name = "notification-sender-lambda-duration"; comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.notification_sender.function_name }; alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_cache_warmer"       { alarm_name = "cache-warmer-lambda-duration";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.cache_warmer.function_name };       alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_batch_processor"    { alarm_name = "batch-processor-lambda-duration";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.batch_processor.function_name };    alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_stream_consumer"    { alarm_name = "stream-consumer-lambda-duration";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.stream_consumer.function_name };    alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_api_authorizer"     { alarm_name = "api-authorizer-lambda-duration";      comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.api_authorizer.function_name };     alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_migrate_data"       { alarm_name = "migrate-data-lambda-duration";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.migrate_data.function_name };       alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "lambda_duration_archive_records"    { alarm_name = "archive-records-lambda-duration";     comparison_operator = "GreaterThanThreshold"; evaluation_periods = 3; metric_name = "Duration"; namespace = "AWS/Lambda"; period = 300; extended_statistic = "p99"; threshold = 25000; dimensions = { FunctionName = aws_lambda_function.archive_records.function_name };    alarm_actions = [aws_sns_topic.main["alerts"].arn] }
 
 # ============================================================
 # CloudWatch Metric Alarms — SQS
 # ============================================================
 
-resource "aws_cloudwatch_metric_alarm" "sqs_depth" {
-  for_each            = toset(["orders", "payments", "notifications", "emails"])
-  alarm_name          = "${each.key}-queue-depth-high"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 2
-  metric_name         = "ApproximateNumberOfMessagesVisible"
-  namespace           = "AWS/SQS"
-  period              = 300
-  statistic           = "Maximum"
-  threshold           = 10000
+resource "aws_cloudwatch_metric_alarm" "sqs_depth_orders"        { alarm_name = "orders-queue-depth-high";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "ApproximateNumberOfMessagesVisible"; namespace = "AWS/SQS"; period = 300; statistic = "Maximum"; threshold = 10000; dimensions = { QueueName = aws_sqs_queue.orders.name };        alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "sqs_depth_payments"      { alarm_name = "payments-queue-depth-high";      comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "ApproximateNumberOfMessagesVisible"; namespace = "AWS/SQS"; period = 300; statistic = "Maximum"; threshold = 10000; dimensions = { QueueName = aws_sqs_queue.payments.name };      alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "sqs_depth_notifications" { alarm_name = "notifications-queue-depth-high"; comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "ApproximateNumberOfMessagesVisible"; namespace = "AWS/SQS"; period = 300; statistic = "Maximum"; threshold = 10000; dimensions = { QueueName = aws_sqs_queue.notifications.name }; alarm_actions = [aws_sns_topic.main["alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "sqs_depth_emails"        { alarm_name = "emails-queue-depth-high";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 2; metric_name = "ApproximateNumberOfMessagesVisible"; namespace = "AWS/SQS"; period = 300; statistic = "Maximum"; threshold = 10000; dimensions = { QueueName = aws_sqs_queue.emails.name };        alarm_actions = [aws_sns_topic.main["alerts"].arn] }
 
-  dimensions = {
-    QueueName = aws_sqs_queue.main[each.key].name
-  }
-
-  alarm_actions = [aws_sns_topic.main["alerts"].arn]
-}
-
-resource "aws_cloudwatch_metric_alarm" "sqs_dlq_depth" {
-  for_each            = toset(["orders", "payments", "notifications"])
-  alarm_name          = "${each.key}-dlq-not-empty"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  metric_name         = "ApproximateNumberOfMessagesVisible"
-  namespace           = "AWS/SQS"
-  period              = 60
-  statistic           = "Sum"
-  threshold           = 0
-
-  dimensions = {
-    QueueName = aws_sqs_queue.dlq[each.key].name
-  }
-
-  alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-}
+resource "aws_cloudwatch_metric_alarm" "sqs_dlq_depth_orders"        { alarm_name = "orders-dlq-not-empty";        comparison_operator = "GreaterThanThreshold"; evaluation_periods = 1; metric_name = "ApproximateNumberOfMessagesVisible"; namespace = "AWS/SQS"; period = 60; statistic = "Sum"; threshold = 0; dimensions = { QueueName = aws_sqs_queue.orders_dlq.name };        alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "sqs_dlq_depth_payments"      { alarm_name = "payments-dlq-not-empty";      comparison_operator = "GreaterThanThreshold"; evaluation_periods = 1; metric_name = "ApproximateNumberOfMessagesVisible"; namespace = "AWS/SQS"; period = 60; statistic = "Sum"; threshold = 0; dimensions = { QueueName = aws_sqs_queue.payments_dlq.name };      alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
+resource "aws_cloudwatch_metric_alarm" "sqs_dlq_depth_notifications" { alarm_name = "notifications-dlq-not-empty"; comparison_operator = "GreaterThanThreshold"; evaluation_periods = 1; metric_name = "ApproximateNumberOfMessagesVisible"; namespace = "AWS/SQS"; period = 60; statistic = "Sum"; threshold = 0; dimensions = { QueueName = aws_sqs_queue.notifications_dlq.name }; alarm_actions = [aws_sns_topic.main["error-alerts"].arn] }
 
 # ============================================================
 # CloudWatch Metric Alarms — EC2 / ASG
@@ -570,23 +534,14 @@ resource "aws_cloudwatch_dashboard" "microservices" {
 
   dashboard_body = jsonencode({
     widgets = [
-      for idx, svc in var.microservices : {
-        type   = "metric"
-        x      = (idx % 4) * 6
-        y      = floor(idx / 4) * 6
-        width  = 6
-        height = 6
-        properties = {
-          metrics = [
-            ["AWS/ECS", "CPUUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", svc],
-            ["AWS/ECS", "MemoryUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", svc]
-          ]
-          period = 300
-          stat   = "Average"
-          region = var.aws_region
-          title  = "${svc} Resources"
-        }
-      }
+      { type = "metric", x = 0,  y = 0, width = 6, height = 6, properties = { metrics = [["AWS/ECS", "CPUUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "api-gateway"],        ["AWS/ECS", "MemoryUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "api-gateway"]],        period = 300, stat = "Average", region = var.aws_region, title = "api-gateway Resources" } },
+      { type = "metric", x = 6,  y = 0, width = 6, height = 6, properties = { metrics = [["AWS/ECS", "CPUUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "user-service"],        ["AWS/ECS", "MemoryUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "user-service"]],        period = 300, stat = "Average", region = var.aws_region, title = "user-service Resources" } },
+      { type = "metric", x = 12, y = 0, width = 6, height = 6, properties = { metrics = [["AWS/ECS", "CPUUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "order-service"],       ["AWS/ECS", "MemoryUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "order-service"]],       period = 300, stat = "Average", region = var.aws_region, title = "order-service Resources" } },
+      { type = "metric", x = 18, y = 0, width = 6, height = 6, properties = { metrics = [["AWS/ECS", "CPUUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "payment-service"],     ["AWS/ECS", "MemoryUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "payment-service"]],     period = 300, stat = "Average", region = var.aws_region, title = "payment-service Resources" } },
+      { type = "metric", x = 0,  y = 6, width = 6, height = 6, properties = { metrics = [["AWS/ECS", "CPUUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "inventory-service"],   ["AWS/ECS", "MemoryUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "inventory-service"]],   period = 300, stat = "Average", region = var.aws_region, title = "inventory-service Resources" } },
+      { type = "metric", x = 6,  y = 6, width = 6, height = 6, properties = { metrics = [["AWS/ECS", "CPUUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "notification-service"], ["AWS/ECS", "MemoryUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "notification-service"]], period = 300, stat = "Average", region = var.aws_region, title = "notification-service Resources" } },
+      { type = "metric", x = 12, y = 6, width = 6, height = 6, properties = { metrics = [["AWS/ECS", "CPUUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "catalog-service"],     ["AWS/ECS", "MemoryUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "catalog-service"]],     period = 300, stat = "Average", region = var.aws_region, title = "catalog-service Resources" } },
+      { type = "metric", x = 18, y = 6, width = 6, height = 6, properties = { metrics = [["AWS/ECS", "CPUUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "search-service"],      ["AWS/ECS", "MemoryUtilization", "ClusterName", aws_ecs_cluster.main["prod"].name, "ServiceName", "search-service"]],      period = 300, stat = "Average", region = var.aws_region, title = "search-service Resources" } }
     ]
   })
 }

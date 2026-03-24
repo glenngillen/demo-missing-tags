@@ -25,7 +25,16 @@ output "ecs_cluster_arns" {
 }
 
 output "ecr_repository_urls" {
-  value = { for k, v in aws_ecr_repository.microservices : k => v.repository_url }
+  value = {
+    api_gateway          = aws_ecr_repository.api_gateway.repository_url
+    user_service         = aws_ecr_repository.user_service.repository_url
+    order_service        = aws_ecr_repository.order_service.repository_url
+    payment_service      = aws_ecr_repository.payment_service.repository_url
+    inventory_service    = aws_ecr_repository.inventory_service.repository_url
+    notification_service = aws_ecr_repository.notification_service.repository_url
+    catalog_service      = aws_ecr_repository.catalog_service.repository_url
+    search_service       = aws_ecr_repository.search_service.repository_url
+  }
 }
 
 output "eks_cluster_endpoints" {
@@ -69,7 +78,22 @@ output "kinesis_stream_arns" {
 }
 
 output "sqs_queue_urls" {
-  value = { for k, v in aws_sqs_queue.main : k => v.id }
+  value = {
+    orders                       = aws_sqs_queue.orders.id
+    payments                     = aws_sqs_queue.payments.id
+    notifications                = aws_sqs_queue.notifications.id
+    emails                       = aws_sqs_queue.emails.id
+    sms                          = aws_sqs_queue.sms.id
+    inventory_updates            = aws_sqs_queue.inventory_updates.id
+    audit_events                 = aws_sqs_queue.audit_events.id
+    image_processing             = aws_sqs_queue.image_processing.id
+    dead_letter_orders           = aws_sqs_queue.dead_letter_orders.id
+    dead_letter_payments         = aws_sqs_queue.dead_letter_payments.id
+    dead_letter_notifications    = aws_sqs_queue.dead_letter_notifications.id
+    payments_fifo                = aws_sqs_queue.payments_fifo.id
+    inventory_updates_fifo       = aws_sqs_queue.inventory_updates_fifo.id
+    audit_events_fifo            = aws_sqs_queue.audit_events_fifo.id
+  }
 }
 
 output "sns_topic_arns" {
@@ -111,5 +135,14 @@ output "waf_web_acl_arn" {
 }
 
 output "codepipeline_names" {
-  value = { for k, v in aws_codepipeline.main : k => v.name }
+  value = {
+    api_gateway          = aws_codepipeline.api_gateway.name
+    user_service         = aws_codepipeline.user_service.name
+    order_service        = aws_codepipeline.order_service.name
+    payment_service      = aws_codepipeline.payment_service.name
+    inventory_service    = aws_codepipeline.inventory_service.name
+    notification_service = aws_codepipeline.notification_service.name
+    catalog_service      = aws_codepipeline.catalog_service.name
+    search_service       = aws_codepipeline.search_service.name
+  }
 }

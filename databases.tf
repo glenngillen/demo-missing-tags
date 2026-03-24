@@ -289,9 +289,8 @@ resource "aws_elasticache_replication_group" "sessions" {
 # DynamoDB Tables
 # ============================================================
 
-resource "aws_dynamodb_table" "main" {
-  for_each     = toset(var.dynamodb_tables)
-  name         = each.key
+resource "aws_dynamodb_table" "users" {
+  name         = "users"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "id"
 
@@ -300,19 +299,155 @@ resource "aws_dynamodb_table" "main" {
     type = "S"
   }
 
-  point_in_time_recovery {
-    enabled = true
+  point_in_time_recovery { enabled = true }
+  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
+  ttl { attribute_name = "expires_at"; enabled = true }
+
+}
+
+resource "aws_dynamodb_table" "sessions" {
+  name         = "sessions"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
   }
 
-  server_side_encryption {
-    enabled     = true
-    kms_key_arn = aws_kms_key.rds.arn
+  point_in_time_recovery { enabled = true }
+  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
+  ttl { attribute_name = "expires_at"; enabled = true }
+
+}
+
+resource "aws_dynamodb_table" "orders" {
+  name         = "orders"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
   }
 
-  ttl {
-    attribute_name = "expires_at"
-    enabled        = true
+  point_in_time_recovery { enabled = true }
+  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
+  ttl { attribute_name = "expires_at"; enabled = true }
+
+
+}
+
+resource "aws_dynamodb_table" "order_items" {
+  name         = "order-items"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
   }
+
+  point_in_time_recovery { enabled = true }
+  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
+  ttl { attribute_name = "expires_at"; enabled = true }
+
+}
+
+resource "aws_dynamodb_table" "products" {
+  name         = "products"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  point_in_time_recovery { enabled = true }
+  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
+  ttl { attribute_name = "expires_at"; enabled = true }
+
+}
+
+resource "aws_dynamodb_table" "inventory" {
+  name         = "inventory"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  point_in_time_recovery { enabled = true }
+  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
+  ttl { attribute_name = "expires_at"; enabled = true }
+
+}
+
+resource "aws_dynamodb_table" "carts" {
+  name         = "carts"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  point_in_time_recovery { enabled = true }
+  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
+  ttl { attribute_name = "expires_at"; enabled = true }
+
+}
+
+resource "aws_dynamodb_table" "feature_flags" {
+  name         = "feature-flags"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  point_in_time_recovery { enabled = true }
+  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
+  ttl { attribute_name = "expires_at"; enabled = true }
+
+}
+
+resource "aws_dynamodb_table" "config" {
+  name         = "config"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  point_in_time_recovery { enabled = true }
+  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
+  ttl { attribute_name = "expires_at"; enabled = true }
+
+}
+
+resource "aws_dynamodb_table" "rate_limits" {
+  name         = "rate-limits"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  point_in_time_recovery { enabled = true }
+  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
+  ttl { attribute_name = "expires_at"; enabled = true }
+
 }
 
 resource "aws_dynamodb_table" "orders_with_gsi" {
@@ -648,7 +783,7 @@ resource "aws_msk_cluster" "main" {
       }
       s3 {
         enabled = true
-        bucket  = aws_s3_bucket.infra["logs"].id
+        bucket  = aws_s3_bucket.logs.id
         prefix  = "${each.key}/msk/"
       }
     }

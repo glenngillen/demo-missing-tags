@@ -209,62 +209,133 @@ resource "aws_lb_target_group" "internal" {
 }
 
 # Per-microservice target groups
-resource "aws_lb_target_group" "microservices" {
-  for_each = {
-    for pair in flatten([
-      for env in var.environments : [
-        for svc in var.microservices : {
-          key = "${env}-${svc}"
-          env = env
-          svc = svc
-        }
-      ]
-    ]) : pair.key => pair
-  }
+resource "aws_lb_target_group" "api_gateway" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-api-gateway-tg"
+  port        = 8080; protocol = "HTTP"
+  vpc_id      = aws_vpc.main[each.key].id; target_type = "ip"
+  health_check { enabled = true; healthy_threshold = 2; interval = 30; matcher = "200"; path = "/health"; port = "traffic-port"; protocol = "HTTP"; timeout = 5; unhealthy_threshold = 3 }
+  deregistration_delay = 30
+}
 
-  name        = "${each.value.env}-${substr(each.value.svc, 0, min(25, length(each.value.svc)))}-tg"
-  port        = 8080
-  protocol    = "HTTP"
-  vpc_id      = aws_vpc.main[each.value.env].id
-  target_type = "ip"
+resource "aws_lb_target_group" "user_service" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-user-service-tg"
+  port        = 8080; protocol = "HTTP"
+  vpc_id      = aws_vpc.main[each.key].id; target_type = "ip"
+  health_check { enabled = true; healthy_threshold = 2; interval = 30; matcher = "200"; path = "/health"; port = "traffic-port"; protocol = "HTTP"; timeout = 5; unhealthy_threshold = 3 }
+  deregistration_delay = 30
+}
 
-  health_check {
-    enabled             = true
-    healthy_threshold   = 2
-    interval            = 30
-    matcher             = "200"
-    path                = "/health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = 5
-    unhealthy_threshold = 3
-  }
+resource "aws_lb_target_group" "order_service" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-order-service-tg"
+  port        = 8080; protocol = "HTTP"
+  vpc_id      = aws_vpc.main[each.key].id; target_type = "ip"
+  health_check { enabled = true; healthy_threshold = 2; interval = 30; matcher = "200"; path = "/health"; port = "traffic-port"; protocol = "HTTP"; timeout = 5; unhealthy_threshold = 3 }
+  deregistration_delay = 30
+}
 
+resource "aws_lb_target_group" "payment_service" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-payment-service-tg"
+  port        = 8080; protocol = "HTTP"
+  vpc_id      = aws_vpc.main[each.key].id; target_type = "ip"
+  health_check { enabled = true; healthy_threshold = 2; interval = 30; matcher = "200"; path = "/health"; port = "traffic-port"; protocol = "HTTP"; timeout = 5; unhealthy_threshold = 3 }
+  deregistration_delay = 30
+}
+
+resource "aws_lb_target_group" "inventory_service" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-inventory-service-tg"
+  port        = 8080; protocol = "HTTP"
+  vpc_id      = aws_vpc.main[each.key].id; target_type = "ip"
+  health_check { enabled = true; healthy_threshold = 2; interval = 30; matcher = "200"; path = "/health"; port = "traffic-port"; protocol = "HTTP"; timeout = 5; unhealthy_threshold = 3 }
+  deregistration_delay = 30
+}
+
+resource "aws_lb_target_group" "notification_service" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-notification-svc-tg"
+  port        = 8080; protocol = "HTTP"
+  vpc_id      = aws_vpc.main[each.key].id; target_type = "ip"
+  health_check { enabled = true; healthy_threshold = 2; interval = 30; matcher = "200"; path = "/health"; port = "traffic-port"; protocol = "HTTP"; timeout = 5; unhealthy_threshold = 3 }
+  deregistration_delay = 30
+}
+
+resource "aws_lb_target_group" "catalog_service" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-catalog-service-tg"
+  port        = 8080; protocol = "HTTP"
+  vpc_id      = aws_vpc.main[each.key].id; target_type = "ip"
+  health_check { enabled = true; healthy_threshold = 2; interval = 30; matcher = "200"; path = "/health"; port = "traffic-port"; protocol = "HTTP"; timeout = 5; unhealthy_threshold = 3 }
+  deregistration_delay = 30
+}
+
+resource "aws_lb_target_group" "search_service" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-search-service-tg"
+  port        = 8080; protocol = "HTTP"
+  vpc_id      = aws_vpc.main[each.key].id; target_type = "ip"
+  health_check { enabled = true; healthy_threshold = 2; interval = 30; matcher = "200"; path = "/health"; port = "traffic-port"; protocol = "HTTP"; timeout = 5; unhealthy_threshold = 3 }
   deregistration_delay = 30
 }
 
 # ALB Listener Rules for microservices
-resource "aws_lb_listener_rule" "microservices" {
-  for_each = {
-    for idx, svc in var.microservices : svc => {
-      svc      = svc
-      priority = idx + 1
-    }
-  }
-
+resource "aws_lb_listener_rule" "api_gateway" {
   listener_arn = aws_lb_listener.api_https["prod"].arn
-  priority     = each.value.priority
+  priority     = 1
+  action { type = "forward"; target_group_arn = aws_lb_target_group.api_gateway["prod"].arn }
+  condition { path_pattern { values = ["/api/api-gateway/*"] } }
+}
 
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.microservices["prod-${each.value.svc}"].arn
-  }
+resource "aws_lb_listener_rule" "user_service" {
+  listener_arn = aws_lb_listener.api_https["prod"].arn
+  priority     = 2
+  action { type = "forward"; target_group_arn = aws_lb_target_group.user_service["prod"].arn }
+  condition { path_pattern { values = ["/api/user-service/*"] } }
+}
 
-  condition {
-    path_pattern {
-      values = ["/api/${each.value.svc}/*"]
-    }
-  }
+resource "aws_lb_listener_rule" "order_service" {
+  listener_arn = aws_lb_listener.api_https["prod"].arn
+  priority     = 3
+  action { type = "forward"; target_group_arn = aws_lb_target_group.order_service["prod"].arn }
+  condition { path_pattern { values = ["/api/order-service/*"] } }
+}
+
+resource "aws_lb_listener_rule" "payment_service" {
+  listener_arn = aws_lb_listener.api_https["prod"].arn
+  priority     = 4
+  action { type = "forward"; target_group_arn = aws_lb_target_group.payment_service["prod"].arn }
+  condition { path_pattern { values = ["/api/payment-service/*"] } }
+}
+
+resource "aws_lb_listener_rule" "inventory_service" {
+  listener_arn = aws_lb_listener.api_https["prod"].arn
+  priority     = 5
+  action { type = "forward"; target_group_arn = aws_lb_target_group.inventory_service["prod"].arn }
+  condition { path_pattern { values = ["/api/inventory-service/*"] } }
+}
+
+resource "aws_lb_listener_rule" "notification_service" {
+  listener_arn = aws_lb_listener.api_https["prod"].arn
+  priority     = 6
+  action { type = "forward"; target_group_arn = aws_lb_target_group.notification_service["prod"].arn }
+  condition { path_pattern { values = ["/api/notification-service/*"] } }
+}
+
+resource "aws_lb_listener_rule" "catalog_service" {
+  listener_arn = aws_lb_listener.api_https["prod"].arn
+  priority     = 7
+  action { type = "forward"; target_group_arn = aws_lb_target_group.catalog_service["prod"].arn }
+  condition { path_pattern { values = ["/api/catalog-service/*"] } }
+}
+
+resource "aws_lb_listener_rule" "search_service" {
+  listener_arn = aws_lb_listener.api_https["prod"].arn
+  priority     = 8
+  action { type = "forward"; target_group_arn = aws_lb_target_group.search_service["prod"].arn }
+  condition { path_pattern { values = ["/api/search-service/*"] } }
 }
 
 # ============================================================

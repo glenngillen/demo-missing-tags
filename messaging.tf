@@ -1,55 +1,353 @@
 # ============================================================
-# SQS Queues
+# SQS Queues — Dead-Letter Queues
 # ============================================================
 
-# Dead-letter queues first
-resource "aws_sqs_queue" "dlq" {
-  for_each                    = toset(var.sqs_queues)
-  name                        = "${each.key}-dlq"
-  message_retention_seconds   = 1209600  # 14 days
-  kms_master_key_id           = aws_kms_key.sqs.id
+resource "aws_sqs_queue" "orders_dlq" {
+  name                      = "orders-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
   kms_data_key_reuse_period_seconds = 300
+
+  
 }
 
-# Main queues
-resource "aws_sqs_queue" "main" {
-  for_each                    = toset(var.sqs_queues)
-  name                        = each.key
-  visibility_timeout_seconds  = 300
-  message_retention_seconds   = 345600  # 4 days
-  receive_wait_time_seconds   = 20
-  kms_master_key_id           = aws_kms_key.sqs.id
+resource "aws_sqs_queue" "payments_dlq" {
+  name                      = "payments-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+resource "aws_sqs_queue" "notifications_dlq" {
+  name                      = "notifications-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+resource "aws_sqs_queue" "emails_dlq" {
+  name                      = "emails-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+resource "aws_sqs_queue" "sms_dlq" {
+  name                      = "sms-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+resource "aws_sqs_queue" "inventory_updates_dlq" {
+  name                      = "inventory-updates-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+resource "aws_sqs_queue" "audit_events_dlq" {
+  name                      = "audit-events-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+resource "aws_sqs_queue" "image_processing_dlq" {
+  name                      = "image-processing-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+resource "aws_sqs_queue" "dead_letter_orders_dlq" {
+  name                      = "dead-letter-orders-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+resource "aws_sqs_queue" "dead_letter_payments_dlq" {
+  name                      = "dead-letter-payments-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+resource "aws_sqs_queue" "dead_letter_notifications_dlq" {
+  name                      = "dead-letter-notifications-dlq"
+  message_retention_seconds = 1209600
+  kms_master_key_id         = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+# ============================================================
+# SQS Queues — Main Queues
+# ============================================================
+
+resource "aws_sqs_queue" "orders" {
+  name                       = "orders"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
   kms_data_key_reuse_period_seconds = 300
 
   redrive_policy = jsonencode({
-    deadLetterTargetArn = aws_sqs_queue.dlq[each.key].arn
+    deadLetterTargetArn = aws_sqs_queue.orders_dlq.arn
     maxReceiveCount     = 5
   })
+
+  
 }
 
-# High-throughput FIFO queues
-resource "aws_sqs_queue" "fifo" {
-  for_each                    = toset(["payments.fifo", "inventory-updates.fifo", "audit-events.fifo"])
-  name                        = each.key
+resource "aws_sqs_queue" "payments" {
+  name                       = "payments"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.payments_dlq.arn
+    maxReceiveCount     = 5
+  })
+
+  
+}
+
+resource "aws_sqs_queue" "notifications" {
+  name                       = "notifications"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.notifications_dlq.arn
+    maxReceiveCount     = 5
+  })
+
+  
+}
+
+resource "aws_sqs_queue" "emails" {
+  name                       = "emails"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.emails_dlq.arn
+    maxReceiveCount     = 5
+  })
+
+  
+}
+
+resource "aws_sqs_queue" "sms" {
+  name                       = "sms"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.sms_dlq.arn
+    maxReceiveCount     = 5
+  })
+
+  
+}
+
+resource "aws_sqs_queue" "inventory_updates" {
+  name                       = "inventory-updates"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.inventory_updates_dlq.arn
+    maxReceiveCount     = 5
+  })
+
+  
+}
+
+resource "aws_sqs_queue" "audit_events" {
+  name                       = "audit-events"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.audit_events_dlq.arn
+    maxReceiveCount     = 5
+  })
+
+  
+}
+
+resource "aws_sqs_queue" "image_processing" {
+  name                       = "image-processing"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.image_processing_dlq.arn
+    maxReceiveCount     = 5
+  })
+
+  
+}
+
+resource "aws_sqs_queue" "dead_letter_orders" {
+  name                       = "dead-letter-orders"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.dead_letter_orders_dlq.arn
+    maxReceiveCount     = 5
+  })
+
+  
+}
+
+resource "aws_sqs_queue" "dead_letter_payments" {
+  name                       = "dead-letter-payments"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.dead_letter_payments_dlq.arn
+    maxReceiveCount     = 5
+  })
+
+  
+}
+
+resource "aws_sqs_queue" "dead_letter_notifications" {
+  name                       = "dead-letter-notifications"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 345600
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.dead_letter_notifications_dlq.arn
+    maxReceiveCount     = 5
+  })
+
+  
+}
+
+# ============================================================
+# SQS Queues — High-throughput FIFO
+# ============================================================
+
+resource "aws_sqs_queue" "payments_fifo_dlq" {
+  name                      = "payments-dlq.fifo"
+  fifo_queue                = true
+  message_retention_seconds = 1209600
+
+  
+}
+
+resource "aws_sqs_queue" "inventory_updates_fifo_dlq" {
+  name                      = "inventory-updates-dlq.fifo"
+  fifo_queue                = true
+  message_retention_seconds = 1209600
+
+  
+}
+
+resource "aws_sqs_queue" "audit_events_fifo_dlq" {
+  name                      = "audit-events-dlq.fifo"
+  fifo_queue                = true
+  message_retention_seconds = 1209600
+
+  
+}
+
+resource "aws_sqs_queue" "payments_fifo" {
+  name                        = "payments.fifo"
   fifo_queue                  = true
   content_based_deduplication = true
   visibility_timeout_seconds  = 300
   message_retention_seconds   = 345600
   kms_master_key_id           = aws_kms_key.sqs.id
   kms_data_key_reuse_period_seconds = 300
+
+  
 }
 
-resource "aws_sqs_queue" "fifo_dlq" {
-  for_each  = toset(["payments-dlq.fifo", "inventory-updates-dlq.fifo", "audit-events-dlq.fifo"])
-  name      = each.key
-  fifo_queue = true
-  message_retention_seconds = 1209600
+resource "aws_sqs_queue" "inventory_updates_fifo" {
+  name                        = "inventory-updates.fifo"
+  fifo_queue                  = true
+  content_based_deduplication = true
+  visibility_timeout_seconds  = 300
+  message_retention_seconds   = 345600
+  kms_master_key_id           = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
+}
+
+resource "aws_sqs_queue" "audit_events_fifo" {
+  name                        = "audit-events.fifo"
+  fifo_queue                  = true
+  content_based_deduplication = true
+  visibility_timeout_seconds  = 300
+  message_retention_seconds   = 345600
+  kms_master_key_id           = aws_kms_key.sqs.id
+  kms_data_key_reuse_period_seconds = 300
+
+  
 }
 
 # SQS Queue Policies
 resource "aws_sqs_queue_policy" "s3_notifications" {
-  for_each  = toset(["image-processing"])
-  queue_url = aws_sqs_queue.main[each.key].id
+  queue_url = aws_sqs_queue.image_processing.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -58,7 +356,7 @@ resource "aws_sqs_queue_policy" "s3_notifications" {
         Effect    = "Allow"
         Principal = { Service = "s3.amazonaws.com" }
         Action    = "sqs:SendMessage"
-        Resource  = aws_sqs_queue.main[each.key].arn
+        Resource  = aws_sqs_queue.image_processing.arn
         Condition = {
           ArnLike = {
             "aws:SourceArn" = "arn:aws:s3:::*"
@@ -69,9 +367,8 @@ resource "aws_sqs_queue_policy" "s3_notifications" {
   })
 }
 
-resource "aws_sqs_queue_policy" "sns_subscriptions" {
-  for_each  = toset(["notifications", "emails", "sms"])
-  queue_url = aws_sqs_queue.main[each.key].id
+resource "aws_sqs_queue_policy" "sns_notifications" {
+  queue_url = aws_sqs_queue.notifications.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -80,7 +377,39 @@ resource "aws_sqs_queue_policy" "sns_subscriptions" {
         Effect    = "Allow"
         Principal = { Service = "sns.amazonaws.com" }
         Action    = "sqs:SendMessage"
-        Resource  = aws_sqs_queue.main[each.key].arn
+        Resource  = aws_sqs_queue.notifications.arn
+      }
+    ]
+  })
+}
+
+resource "aws_sqs_queue_policy" "sns_emails" {
+  queue_url = aws_sqs_queue.emails.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = { Service = "sns.amazonaws.com" }
+        Action    = "sqs:SendMessage"
+        Resource  = aws_sqs_queue.emails.arn
+      }
+    ]
+  })
+}
+
+resource "aws_sqs_queue_policy" "sns_sms" {
+  queue_url = aws_sqs_queue.sms.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = { Service = "sns.amazonaws.com" }
+        Action    = "sqs:SendMessage"
+        Resource  = aws_sqs_queue.sms.arn
       }
     ]
   })
@@ -106,7 +435,7 @@ resource "aws_sns_topic" "main" {
 resource "aws_sns_topic_subscription" "notifications_to_sqs" {
   topic_arn = aws_sns_topic.main["notifications"].arn
   protocol  = "sqs"
-  endpoint  = aws_sqs_queue.main["notifications"].arn
+  endpoint  = aws_sqs_queue.notifications.arn
 
   filter_policy = jsonencode({
     event_type = ["notification", "alert"]
@@ -116,7 +445,7 @@ resource "aws_sns_topic_subscription" "notifications_to_sqs" {
 resource "aws_sns_topic_subscription" "orders_to_sqs" {
   topic_arn = aws_sns_topic.main["orders"].arn
   protocol  = "sqs"
-  endpoint  = aws_sqs_queue.main["orders"].arn
+  endpoint  = aws_sqs_queue.orders.arn
 }
 
 resource "aws_sns_topic_subscription" "alerts_to_email" {
@@ -217,7 +546,7 @@ resource "aws_kinesis_firehose_delivery_stream" "events_to_s3" {
 
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose.arn
-    bucket_arn          = aws_s3_bucket.app["data-lake"].arn
+    bucket_arn          = aws_s3_bucket.data_lake.arn
     prefix              = "events/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
     error_output_prefix = "errors/!{firehose:error-output-type}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/"
 
@@ -264,7 +593,7 @@ resource "aws_kinesis_firehose_delivery_stream" "clickstream_to_s3" {
 
   extended_s3_configuration {
     role_arn            = aws_iam_role.firehose.arn
-    bucket_arn          = aws_s3_bucket.app["data-lake"].arn
+    bucket_arn          = aws_s3_bucket.data_lake.arn
     prefix              = "clickstream/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
     error_output_prefix = "errors/clickstream/!{firehose:error-output-type}/"
 
@@ -298,7 +627,7 @@ resource "aws_cloudwatch_event_rule" "cleanup_sessions" {
 resource "aws_cloudwatch_event_target" "cleanup_sessions" {
   rule      = aws_cloudwatch_event_rule.cleanup_sessions.name
   target_id = "CleanupSessionsLambda"
-  arn       = aws_lambda_function.main["cleanup-sessions"].arn
+  arn       = aws_lambda_function.cleanup_sessions.arn
 }
 
 resource "aws_cloudwatch_event_rule" "cache_warmer" {
@@ -310,7 +639,7 @@ resource "aws_cloudwatch_event_rule" "cache_warmer" {
 resource "aws_cloudwatch_event_target" "cache_warmer" {
   rule      = aws_cloudwatch_event_rule.cache_warmer.name
   target_id = "CacheWarmerLambda"
-  arn       = aws_lambda_function.main["cache-warmer"].arn
+  arn       = aws_lambda_function.cache_warmer.arn
 }
 
 resource "aws_cloudwatch_event_rule" "generate_report" {
@@ -322,7 +651,7 @@ resource "aws_cloudwatch_event_rule" "generate_report" {
 resource "aws_cloudwatch_event_target" "generate_report" {
   rule      = aws_cloudwatch_event_rule.generate_report.name
   target_id = "GenerateReportLambda"
-  arn       = aws_lambda_function.main["generate-report"].arn
+  arn       = aws_lambda_function.generate_report.arn
 }
 
 resource "aws_cloudwatch_event_rule" "order_events" {
@@ -340,7 +669,7 @@ resource "aws_cloudwatch_event_target" "order_events_sqs" {
   rule           = aws_cloudwatch_event_rule.order_events.name
   event_bus_name = aws_cloudwatch_event_bus.main.name
   target_id      = "OrdersQueue"
-  arn            = aws_sqs_queue.main["orders"].arn
+  arn            = aws_sqs_queue.orders.arn
 }
 
 resource "aws_cloudwatch_event_rule" "payment_events" {
@@ -357,7 +686,7 @@ resource "aws_cloudwatch_event_target" "payment_events_sqs" {
   rule           = aws_cloudwatch_event_rule.payment_events.name
   event_bus_name = aws_cloudwatch_event_bus.main.name
   target_id      = "PaymentsQueue"
-  arn            = aws_sqs_queue.fifo["payments.fifo"].arn
+  arn            = aws_sqs_queue.payments_fifo.arn
   sqs_target {
     message_group_id = "payments"
   }
@@ -437,5 +766,5 @@ resource "aws_cloudwatch_event_rule" "archive_records" {
 resource "aws_cloudwatch_event_target" "archive_records" {
   rule      = aws_cloudwatch_event_rule.archive_records.name
   target_id = "ArchiveRecordsLambda"
-  arn       = aws_lambda_function.main["archive-records"].arn
+  arn       = aws_lambda_function.archive_records.arn
 }
