@@ -25,7 +25,8 @@
       "Bash(python3:*)",
       "Bash(head -10 echo \"---\" grep -n \";\" /Users/gg/Development/infracost/demo-missing-tags/containers.tf)",
       "Bash(head -10 echo \"---\" grep -n \";\" /Users/gg/Development/infracost/demo-missing-tags/compute.tf)",
-      "Bash(wc -l grep -n \";\" /Users/gg/Development/infracost/demo-missing-tags/containers.tf)"
+      "Bash(wc -l grep -n \";\" /Users/gg/Development/infracost/demo-missing-tags/containers.tf)",
+      "Bash(/dev/null infracost-preview:*)"
     ]
   },
   "enabledPlugins": {}
