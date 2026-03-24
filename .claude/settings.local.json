@@ -12,7 +12,16 @@
       "Bash(# Get the breakdown of violations by file to understand scope per module /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\")",
       "Bash(# Count total unique resources \\(not instances\\) to understand scope of changes needed /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\")",
       "Bash(# Get unique resource types with violations /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\")",
-      "Bash(# Get the cdn.tf resources since only 3 there - these might have partial tags that explain \"\"Invalid\"\" vs \"\"Missing\"\" /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\")"
+      "Bash(# Get the cdn.tf resources since only 3 there - these might have partial tags that explain \"\"Invalid\"\" vs \"\"Missing\"\" /Users/gg/Development/infracost/cli-poc/bin/infracost inspect --file /tmp/infracost-demo-missing-tags.json --policy \"\"FinOps tags\"\")",
+      "Bash(tee /tmp/infracost-scan.json)",
+      "Bash(tee /tmp/infracost-scan-results.json)",
+      "Bash(infracost-preview inspect:*)",
+      "Bash(infracost-preview scan:*)",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(echo \"exit: $?\")",
+      "Bash(GRPC_MAX_RECV_MSG_SIZE=16777216 infracost-preview scan /Users/gg/Development/infracost/demo-missing-tags)",
+      "Bash(gh release:*)"
     ]
-  }
+  },
+  "enabledPlugins": {}
 }
