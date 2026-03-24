@@ -21,7 +21,10 @@ resource "aws_ecr_repository" "api_gateway" {
   name                 = "api-gateway"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration { scan_on_push = true }
-  encryption_configuration { encryption_type = "KMS"; kms_key = aws_kms_key.rds.arn }
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key = aws_kms_key.rds.arn
+  }
 }
 resource "aws_ecr_lifecycle_policy" "api_gateway" {
   repository = aws_ecr_repository.api_gateway.name
@@ -32,7 +35,10 @@ resource "aws_ecr_repository" "user_service" {
   name                 = "user-service"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration { scan_on_push = true }
-  encryption_configuration { encryption_type = "KMS"; kms_key = aws_kms_key.rds.arn }
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key = aws_kms_key.rds.arn
+  }
 }
 resource "aws_ecr_lifecycle_policy" "user_service" {
   repository = aws_ecr_repository.user_service.name
@@ -43,7 +49,10 @@ resource "aws_ecr_repository" "order_service" {
   name                 = "order-service"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration { scan_on_push = true }
-  encryption_configuration { encryption_type = "KMS"; kms_key = aws_kms_key.rds.arn }
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key = aws_kms_key.rds.arn
+  }
 }
 resource "aws_ecr_lifecycle_policy" "order_service" {
   repository = aws_ecr_repository.order_service.name
@@ -54,7 +63,10 @@ resource "aws_ecr_repository" "payment_service" {
   name                 = "payment-service"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration { scan_on_push = true }
-  encryption_configuration { encryption_type = "KMS"; kms_key = aws_kms_key.rds.arn }
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key = aws_kms_key.rds.arn
+  }
 }
 resource "aws_ecr_lifecycle_policy" "payment_service" {
   repository = aws_ecr_repository.payment_service.name
@@ -65,7 +77,10 @@ resource "aws_ecr_repository" "inventory_service" {
   name                 = "inventory-service"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration { scan_on_push = true }
-  encryption_configuration { encryption_type = "KMS"; kms_key = aws_kms_key.rds.arn }
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key = aws_kms_key.rds.arn
+  }
 }
 resource "aws_ecr_lifecycle_policy" "inventory_service" {
   repository = aws_ecr_repository.inventory_service.name
@@ -76,7 +91,10 @@ resource "aws_ecr_repository" "notification_service" {
   name                 = "notification-service"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration { scan_on_push = true }
-  encryption_configuration { encryption_type = "KMS"; kms_key = aws_kms_key.rds.arn }
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key = aws_kms_key.rds.arn
+  }
 
 }
 resource "aws_ecr_lifecycle_policy" "notification_service" {
@@ -88,7 +106,10 @@ resource "aws_ecr_repository" "catalog_service" {
   name                 = "catalog-service"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration { scan_on_push = true }
-  encryption_configuration { encryption_type = "KMS"; kms_key = aws_kms_key.rds.arn }
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key = aws_kms_key.rds.arn
+  }
 }
 resource "aws_ecr_lifecycle_policy" "catalog_service" {
   repository = aws_ecr_repository.catalog_service.name
@@ -99,7 +120,10 @@ resource "aws_ecr_repository" "search_service" {
   name                 = "search-service"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration { scan_on_push = true }
-  encryption_configuration { encryption_type = "KMS"; kms_key = aws_kms_key.rds.arn }
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key = aws_kms_key.rds.arn
+  }
 }
 resource "aws_ecr_lifecycle_policy" "search_service" {
   repository = aws_ecr_repository.search_service.name
@@ -384,14 +408,24 @@ resource "aws_ecs_service" "api_gateway" {
   cluster         = aws_ecs_cluster.main[each.key].id
   task_definition = aws_ecs_task_definition.api_gateway.arn
   desired_count   = each.key == "prod" ? 3 : 1
-  capacity_provider_strategy { capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"; weight = 1 }
+  capacity_provider_strategy {
+    capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"
+    weight = 1
+  }
   network_configuration {
     subnets          = [aws_subnet.private["${each.key}-0"].id, aws_subnet.private["${each.key}-1"].id, aws_subnet.private["${each.key}-2"].id]
     security_groups  = [aws_security_group.ecs_tasks[each.key].id]
     assign_public_ip = false
   }
-  load_balancer { target_group_arn = aws_lb_target_group.api_gateway[each.key].arn; container_name = "api-gateway"; container_port = 8080 }
-  deployment_circuit_breaker { enable = true; rollback = true }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.api_gateway[each.key].arn
+    container_name = "api-gateway"
+    container_port = 8080
+  }
+  deployment_circuit_breaker {
+    enable = true
+    rollback = true
+  }
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
@@ -403,14 +437,24 @@ resource "aws_ecs_service" "user_service" {
   cluster         = aws_ecs_cluster.main[each.key].id
   task_definition = aws_ecs_task_definition.user_service.arn
   desired_count   = each.key == "prod" ? 3 : 1
-  capacity_provider_strategy { capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"; weight = 1 }
+  capacity_provider_strategy {
+    capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"
+    weight = 1
+  }
   network_configuration {
     subnets          = [aws_subnet.private["${each.key}-0"].id, aws_subnet.private["${each.key}-1"].id, aws_subnet.private["${each.key}-2"].id]
     security_groups  = [aws_security_group.ecs_tasks[each.key].id]
     assign_public_ip = false
   }
-  load_balancer { target_group_arn = aws_lb_target_group.user_service[each.key].arn; container_name = "user-service"; container_port = 8080 }
-  deployment_circuit_breaker { enable = true; rollback = true }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.user_service[each.key].arn
+    container_name = "user-service"
+    container_port = 8080
+  }
+  deployment_circuit_breaker {
+    enable = true
+    rollback = true
+  }
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
@@ -422,14 +466,24 @@ resource "aws_ecs_service" "order_service" {
   cluster         = aws_ecs_cluster.main[each.key].id
   task_definition = aws_ecs_task_definition.order_service.arn
   desired_count   = each.key == "prod" ? 3 : 1
-  capacity_provider_strategy { capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"; weight = 1 }
+  capacity_provider_strategy {
+    capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"
+    weight = 1
+  }
   network_configuration {
     subnets          = [aws_subnet.private["${each.key}-0"].id, aws_subnet.private["${each.key}-1"].id, aws_subnet.private["${each.key}-2"].id]
     security_groups  = [aws_security_group.ecs_tasks[each.key].id]
     assign_public_ip = false
   }
-  load_balancer { target_group_arn = aws_lb_target_group.order_service[each.key].arn; container_name = "order-service"; container_port = 8080 }
-  deployment_circuit_breaker { enable = true; rollback = true }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.order_service[each.key].arn
+    container_name = "order-service"
+    container_port = 8080
+  }
+  deployment_circuit_breaker {
+    enable = true
+    rollback = true
+  }
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
@@ -441,14 +495,24 @@ resource "aws_ecs_service" "payment_service" {
   cluster         = aws_ecs_cluster.main[each.key].id
   task_definition = aws_ecs_task_definition.payment_service.arn
   desired_count   = each.key == "prod" ? 3 : 1
-  capacity_provider_strategy { capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"; weight = 1 }
+  capacity_provider_strategy {
+    capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"
+    weight = 1
+  }
   network_configuration {
     subnets          = [aws_subnet.private["${each.key}-0"].id, aws_subnet.private["${each.key}-1"].id, aws_subnet.private["${each.key}-2"].id]
     security_groups  = [aws_security_group.ecs_tasks[each.key].id]
     assign_public_ip = false
   }
-  load_balancer { target_group_arn = aws_lb_target_group.payment_service[each.key].arn; container_name = "payment-service"; container_port = 8080 }
-  deployment_circuit_breaker { enable = true; rollback = true }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.payment_service[each.key].arn
+    container_name = "payment-service"
+    container_port = 8080
+  }
+  deployment_circuit_breaker {
+    enable = true
+    rollback = true
+  }
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
@@ -460,14 +524,24 @@ resource "aws_ecs_service" "inventory_service" {
   cluster         = aws_ecs_cluster.main[each.key].id
   task_definition = aws_ecs_task_definition.inventory_service.arn
   desired_count   = each.key == "prod" ? 3 : 1
-  capacity_provider_strategy { capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"; weight = 1 }
+  capacity_provider_strategy {
+    capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"
+    weight = 1
+  }
   network_configuration {
     subnets          = [aws_subnet.private["${each.key}-0"].id, aws_subnet.private["${each.key}-1"].id, aws_subnet.private["${each.key}-2"].id]
     security_groups  = [aws_security_group.ecs_tasks[each.key].id]
     assign_public_ip = false
   }
-  load_balancer { target_group_arn = aws_lb_target_group.inventory_service[each.key].arn; container_name = "inventory-service"; container_port = 8080 }
-  deployment_circuit_breaker { enable = true; rollback = true }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.inventory_service[each.key].arn
+    container_name = "inventory-service"
+    container_port = 8080
+  }
+  deployment_circuit_breaker {
+    enable = true
+    rollback = true
+  }
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
@@ -479,14 +553,24 @@ resource "aws_ecs_service" "notification_service" {
   cluster         = aws_ecs_cluster.main[each.key].id
   task_definition = aws_ecs_task_definition.notification_service.arn
   desired_count   = each.key == "prod" ? 3 : 1
-  capacity_provider_strategy { capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"; weight = 1 }
+  capacity_provider_strategy {
+    capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"
+    weight = 1
+  }
   network_configuration {
     subnets          = [aws_subnet.private["${each.key}-0"].id, aws_subnet.private["${each.key}-1"].id, aws_subnet.private["${each.key}-2"].id]
     security_groups  = [aws_security_group.ecs_tasks[each.key].id]
     assign_public_ip = false
   }
-  load_balancer { target_group_arn = aws_lb_target_group.notification_service[each.key].arn; container_name = "notification-service"; container_port = 8080 }
-  deployment_circuit_breaker { enable = true; rollback = true }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.notification_service[each.key].arn
+    container_name = "notification-service"
+    container_port = 8080
+  }
+  deployment_circuit_breaker {
+    enable = true
+    rollback = true
+  }
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
@@ -498,14 +582,24 @@ resource "aws_ecs_service" "catalog_service" {
   cluster         = aws_ecs_cluster.main[each.key].id
   task_definition = aws_ecs_task_definition.catalog_service.arn
   desired_count   = each.key == "prod" ? 3 : 1
-  capacity_provider_strategy { capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"; weight = 1 }
+  capacity_provider_strategy {
+    capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"
+    weight = 1
+  }
   network_configuration {
     subnets          = [aws_subnet.private["${each.key}-0"].id, aws_subnet.private["${each.key}-1"].id, aws_subnet.private["${each.key}-2"].id]
     security_groups  = [aws_security_group.ecs_tasks[each.key].id]
     assign_public_ip = false
   }
-  load_balancer { target_group_arn = aws_lb_target_group.catalog_service[each.key].arn; container_name = "catalog-service"; container_port = 8080 }
-  deployment_circuit_breaker { enable = true; rollback = true }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.catalog_service[each.key].arn
+    container_name = "catalog-service"
+    container_port = 8080
+  }
+  deployment_circuit_breaker {
+    enable = true
+    rollback = true
+  }
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
@@ -517,14 +611,24 @@ resource "aws_ecs_service" "search_service" {
   cluster         = aws_ecs_cluster.main[each.key].id
   task_definition = aws_ecs_task_definition.search_service.arn
   desired_count   = each.key == "prod" ? 3 : 1
-  capacity_provider_strategy { capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"; weight = 1 }
+  capacity_provider_strategy {
+    capacity_provider = each.key == "prod" ? "FARGATE" : "FARGATE_SPOT"
+    weight = 1
+  }
   network_configuration {
     subnets          = [aws_subnet.private["${each.key}-0"].id, aws_subnet.private["${each.key}-1"].id, aws_subnet.private["${each.key}-2"].id]
     security_groups  = [aws_security_group.ecs_tasks[each.key].id]
     assign_public_ip = false
   }
-  load_balancer { target_group_arn = aws_lb_target_group.search_service[each.key].arn; container_name = "search-service"; container_port = 8080 }
-  deployment_circuit_breaker { enable = true; rollback = true }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.search_service[each.key].arn
+    container_name = "search-service"
+    container_port = 8080
+  }
+  deployment_circuit_breaker {
+    enable = true
+    rollback = true
+  }
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
@@ -535,179 +639,283 @@ resource "aws_ecs_service" "search_service" {
 # ============================================================
 
 resource "aws_appautoscaling_target" "ecs_api_gateway" {
-  max_capacity = 20; min_capacity = 2
+  max_capacity = 20
+  min_capacity = 2
   resource_id        = "service/${aws_ecs_cluster.main["prod"].name}/api-gateway"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.api_gateway]
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_api_gateway" {
-  name = "api-gateway-cpu-scaling"; policy_type = "TargetTrackingScaling"
+  name = "api-gateway-cpu-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_api_gateway.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_api_gateway.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_api_gateway.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }; target_value = 70.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }
+    target_value = 70.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_memory_api_gateway" {
-  name = "api-gateway-memory-scaling"; policy_type = "TargetTrackingScaling"
+  name = "api-gateway-memory-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_api_gateway.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_api_gateway.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_api_gateway.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }; target_value = 80.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }
+    target_value = 80.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 
 resource "aws_appautoscaling_target" "ecs_user_service" {
-  max_capacity = 20; min_capacity = 2
+  max_capacity = 20
+  min_capacity = 2
   resource_id        = "service/${aws_ecs_cluster.main["prod"].name}/user-service"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.user_service]
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_user_service" {
-  name = "user-service-cpu-scaling"; policy_type = "TargetTrackingScaling"
+  name = "user-service-cpu-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_user_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_user_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_user_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }; target_value = 70.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }
+    target_value = 70.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_memory_user_service" {
-  name = "user-service-memory-scaling"; policy_type = "TargetTrackingScaling"
+  name = "user-service-memory-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_user_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_user_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_user_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }; target_value = 80.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }
+    target_value = 80.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 
 resource "aws_appautoscaling_target" "ecs_order_service" {
-  max_capacity = 20; min_capacity = 2
+  max_capacity = 20
+  min_capacity = 2
   resource_id        = "service/${aws_ecs_cluster.main["prod"].name}/order-service"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.order_service]
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_order_service" {
-  name = "order-service-cpu-scaling"; policy_type = "TargetTrackingScaling"
+  name = "order-service-cpu-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_order_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_order_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_order_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }; target_value = 70.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }
+    target_value = 70.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_memory_order_service" {
-  name = "order-service-memory-scaling"; policy_type = "TargetTrackingScaling"
+  name = "order-service-memory-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_order_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_order_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_order_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }; target_value = 80.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }
+    target_value = 80.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 
 resource "aws_appautoscaling_target" "ecs_payment_service" {
-  max_capacity = 20; min_capacity = 2
+  max_capacity = 20
+  min_capacity = 2
   resource_id        = "service/${aws_ecs_cluster.main["prod"].name}/payment-service"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.payment_service]
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_payment_service" {
-  name = "payment-service-cpu-scaling"; policy_type = "TargetTrackingScaling"
+  name = "payment-service-cpu-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_payment_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_payment_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_payment_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }; target_value = 70.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }
+    target_value = 70.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_memory_payment_service" {
-  name = "payment-service-memory-scaling"; policy_type = "TargetTrackingScaling"
+  name = "payment-service-memory-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_payment_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_payment_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_payment_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }; target_value = 80.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }
+    target_value = 80.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 
 resource "aws_appautoscaling_target" "ecs_inventory_service" {
-  max_capacity = 20; min_capacity = 2
+  max_capacity = 20
+  min_capacity = 2
   resource_id        = "service/${aws_ecs_cluster.main["prod"].name}/inventory-service"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.inventory_service]
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_inventory_service" {
-  name = "inventory-service-cpu-scaling"; policy_type = "TargetTrackingScaling"
+  name = "inventory-service-cpu-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_inventory_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_inventory_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_inventory_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }; target_value = 70.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }
+    target_value = 70.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_memory_inventory_service" {
-  name = "inventory-service-memory-scaling"; policy_type = "TargetTrackingScaling"
+  name = "inventory-service-memory-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_inventory_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_inventory_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_inventory_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }; target_value = 80.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }
+    target_value = 80.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 
 resource "aws_appautoscaling_target" "ecs_notification_service" {
-  max_capacity = 20; min_capacity = 2
+  max_capacity = 20
+  min_capacity = 2
   resource_id        = "service/${aws_ecs_cluster.main["prod"].name}/notification-service"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.notification_service]
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_notification_service" {
-  name = "notification-service-cpu-scaling"; policy_type = "TargetTrackingScaling"
+  name = "notification-service-cpu-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_notification_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_notification_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_notification_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }; target_value = 70.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }
+    target_value = 70.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_memory_notification_service" {
-  name = "notification-service-memory-scaling"; policy_type = "TargetTrackingScaling"
+  name = "notification-service-memory-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_notification_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_notification_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_notification_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }; target_value = 80.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }
+    target_value = 80.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 
 resource "aws_appautoscaling_target" "ecs_catalog_service" {
-  max_capacity = 20; min_capacity = 2
+  max_capacity = 20
+  min_capacity = 2
   resource_id        = "service/${aws_ecs_cluster.main["prod"].name}/catalog-service"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.catalog_service]
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_catalog_service" {
-  name = "catalog-service-cpu-scaling"; policy_type = "TargetTrackingScaling"
+  name = "catalog-service-cpu-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_catalog_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_catalog_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_catalog_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }; target_value = 70.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }
+    target_value = 70.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_memory_catalog_service" {
-  name = "catalog-service-memory-scaling"; policy_type = "TargetTrackingScaling"
+  name = "catalog-service-memory-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_catalog_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_catalog_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_catalog_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }; target_value = 80.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }
+    target_value = 80.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 
 resource "aws_appautoscaling_target" "ecs_search_service" {
-  max_capacity = 20; min_capacity = 2
+  max_capacity = 20
+  min_capacity = 2
   resource_id        = "service/${aws_ecs_cluster.main["prod"].name}/search-service"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.search_service]
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_search_service" {
-  name = "search-service-cpu-scaling"; policy_type = "TargetTrackingScaling"
+  name = "search-service-cpu-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_search_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_search_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_search_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }; target_value = 70.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageCPUUtilization" }
+    target_value = 70.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_memory_search_service" {
-  name = "search-service-memory-scaling"; policy_type = "TargetTrackingScaling"
+  name = "search-service-memory-scaling"
+  policy_type = "TargetTrackingScaling"
   resource_id = aws_appautoscaling_target.ecs_search_service.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_search_service.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_search_service.service_namespace
-  target_tracking_scaling_policy_configuration { predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }; target_value = 80.0; scale_in_cooldown = 300; scale_out_cooldown = 60 }
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification { predefined_metric_type = "ECSServiceAverageMemoryUtilization" }
+    target_value = 80.0
+    scale_in_cooldown = 300
+    scale_out_cooldown = 60
+  }
 }
 
 # ============================================================

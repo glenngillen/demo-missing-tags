@@ -36,9 +36,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "raw_data" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {
@@ -88,9 +97,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "processed_data" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {
@@ -140,9 +158,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "backups" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {
@@ -192,8 +219,14 @@ resource "aws_s3_bucket_lifecycle_configuration" "logs" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
     expiration { days = 90 }
   }
   rule {
@@ -243,9 +276,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "user_uploads" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {
@@ -295,9 +337,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "product_images" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {
@@ -347,9 +398,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "documents" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {
@@ -399,9 +459,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "audit_logs" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {
@@ -451,8 +520,14 @@ resource "aws_s3_bucket_lifecycle_configuration" "access_logs" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
     expiration { days = 90 }
   }
   rule {
@@ -498,8 +573,14 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail_logs" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
     expiration { days = 90 }
   }
   rule {
@@ -549,9 +630,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "codepipeline_artifacts" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {
@@ -601,9 +691,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "static_assets" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {
@@ -653,9 +752,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "media" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {
@@ -705,9 +813,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "data_lake" {
   rule {
     id     = "transition-to-ia"
     status = "Enabled"
-    transition { days = 30; storage_class = "STANDARD_IA" }
-    transition { days = 90; storage_class = "GLACIER" }
-    transition { days = 365; storage_class = "DEEP_ARCHIVE" }
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+    transition {
+      days          = 365
+      storage_class = "DEEP_ARCHIVE"
+    }
     expiration { days = 2555 }
   }
   rule {

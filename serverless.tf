@@ -900,11 +900,9 @@ resource "aws_api_gateway_stage" "prod" {
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gateway.arn
+    format          = "$context.requestId $context.status $context.responseLatency"
   }
 
-  default_route_settings {}
-
-  
 }
 
 resource "aws_api_gateway_stage" "staging" {
@@ -916,11 +914,9 @@ resource "aws_api_gateway_stage" "staging" {
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gateway.arn
+    format          = "$context.requestId $context.status $context.responseLatency"
   }
 
-  default_route_settings {}
-
-  
 }
 
 resource "aws_api_gateway_usage_plan" "main" {

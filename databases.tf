@@ -300,8 +300,14 @@ resource "aws_dynamodb_table" "users" {
   }
 
   point_in_time_recovery { enabled = true }
-  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
-  ttl { attribute_name = "expires_at"; enabled = true }
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.rds.arn
+  }
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 
 }
 
@@ -316,8 +322,14 @@ resource "aws_dynamodb_table" "sessions" {
   }
 
   point_in_time_recovery { enabled = true }
-  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
-  ttl { attribute_name = "expires_at"; enabled = true }
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.rds.arn
+  }
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 
 }
 
@@ -332,8 +344,14 @@ resource "aws_dynamodb_table" "orders" {
   }
 
   point_in_time_recovery { enabled = true }
-  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
-  ttl { attribute_name = "expires_at"; enabled = true }
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.rds.arn
+  }
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 
 
 }
@@ -349,8 +367,14 @@ resource "aws_dynamodb_table" "order_items" {
   }
 
   point_in_time_recovery { enabled = true }
-  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
-  ttl { attribute_name = "expires_at"; enabled = true }
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.rds.arn
+  }
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 
 }
 
@@ -365,8 +389,14 @@ resource "aws_dynamodb_table" "products" {
   }
 
   point_in_time_recovery { enabled = true }
-  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
-  ttl { attribute_name = "expires_at"; enabled = true }
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.rds.arn
+  }
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 
 }
 
@@ -381,8 +411,14 @@ resource "aws_dynamodb_table" "inventory" {
   }
 
   point_in_time_recovery { enabled = true }
-  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
-  ttl { attribute_name = "expires_at"; enabled = true }
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.rds.arn
+  }
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 
 }
 
@@ -397,8 +433,14 @@ resource "aws_dynamodb_table" "carts" {
   }
 
   point_in_time_recovery { enabled = true }
-  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
-  ttl { attribute_name = "expires_at"; enabled = true }
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.rds.arn
+  }
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 
 }
 
@@ -413,8 +455,14 @@ resource "aws_dynamodb_table" "feature_flags" {
   }
 
   point_in_time_recovery { enabled = true }
-  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
-  ttl { attribute_name = "expires_at"; enabled = true }
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.rds.arn
+  }
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 
 }
 
@@ -429,8 +477,14 @@ resource "aws_dynamodb_table" "config" {
   }
 
   point_in_time_recovery { enabled = true }
-  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
-  ttl { attribute_name = "expires_at"; enabled = true }
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.rds.arn
+  }
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 
 }
 
@@ -445,8 +499,14 @@ resource "aws_dynamodb_table" "rate_limits" {
   }
 
   point_in_time_recovery { enabled = true }
-  server_side_encryption { enabled = true; kms_key_arn = aws_kms_key.rds.arn }
-  ttl { attribute_name = "expires_at"; enabled = true }
+  server_side_encryption {
+    enabled     = true
+    kms_key_arn = aws_kms_key.rds.arn
+  }
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 
 }
 
@@ -712,11 +772,12 @@ resource "aws_redshift_cluster" "main" {
   enhanced_vpc_routing = true
   publicly_accessible  = false
 
-  logging {
-    enable        = true
-    bucket_name   = aws_s3_bucket.infra["audit-logs"].id
-    s3_key_prefix = "redshift/"
-  }
+}
+
+resource "aws_redshift_logging" "main" {
+  cluster_identifier = aws_redshift_cluster.main.id
+  bucket_name        = aws_s3_bucket.infra["audit-logs"].id
+  s3_key_prefix      = "redshift/"
 }
 
 # ============================================================

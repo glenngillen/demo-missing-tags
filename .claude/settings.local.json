@@ -20,7 +20,12 @@
       "Bash(echo \"Exit: $?\")",
       "Bash(echo \"exit: $?\")",
       "Bash(GRPC_MAX_RECV_MSG_SIZE=16777216 infracost-preview scan /Users/gg/Development/infracost/demo-missing-tags)",
-      "Bash(gh release:*)"
+      "Bash(gh release:*)",
+      "Bash(terraform plan:*)",
+      "Bash(python3:*)",
+      "Bash(head -10 echo \"---\" grep -n \";\" /Users/gg/Development/infracost/demo-missing-tags/containers.tf)",
+      "Bash(head -10 echo \"---\" grep -n \";\" /Users/gg/Development/infracost/demo-missing-tags/compute.tf)",
+      "Bash(wc -l grep -n \";\" /Users/gg/Development/infracost/demo-missing-tags/containers.tf)"
     ]
   },
   "enabledPlugins": {}
