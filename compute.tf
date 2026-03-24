@@ -1,4 +1,85 @@
 # ============================================================
+# Security Groups
+# ============================================================
+
+resource "aws_security_group" "alb_public" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-alb-public"
+  description = "Public ALB security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "alb_internal" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-alb-internal"
+  description = "Internal ALB security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidrs[each.key]]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidrs[each.key]]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "ec2_bastion" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-bastion"
+  description = "Bastion host security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/8"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# ============================================================
 # Application Load Balancers — Public (1 per env)
 # ============================================================
 

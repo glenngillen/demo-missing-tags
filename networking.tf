@@ -432,6 +432,31 @@ resource "aws_elasticache_subnet_group" "main" {
 }
 
 # ============================================================
+# Security Groups
+# ============================================================
+
+resource "aws_security_group" "vpc_endpoints" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-vpc-endpoints"
+  description = "VPC endpoints security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidrs[each.key]]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# ============================================================
 # VPC Endpoints
 # ============================================================
 

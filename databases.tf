@@ -1,4 +1,113 @@
 # ============================================================
+# Security Groups
+# ============================================================
+
+resource "aws_security_group" "rds" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-rds"
+  description = "RDS security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.ecs_tasks[each.key].id]
+  }
+
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.ec2_bastion[each.key].id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "redis" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-redis"
+  description = "Redis security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  ingress {
+    from_port       = 6379
+    to_port         = 6379
+    protocol        = "tcp"
+    security_groups = [aws_security_group.ecs_tasks[each.key].id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "msk" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-msk"
+  description = "MSK Kafka security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  ingress {
+    from_port   = 9092
+    to_port     = 9092
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidrs[each.key]]
+  }
+
+  ingress {
+    from_port   = 9094
+    to_port     = 9094
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidrs[each.key]]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "opensearch" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-opensearch"
+  description = "OpenSearch security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidrs[each.key]]
+  }
+
+  ingress {
+    from_port   = 9200
+    to_port     = 9200
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidrs[each.key]]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# ============================================================
 # RDS — Parameter Groups
 # ============================================================
 

@@ -1,4 +1,78 @@
 # ============================================================
+# Security Groups
+# ============================================================
+
+resource "aws_security_group" "ecs_tasks" {
+  for_each    = toset(var.environments)
+  name        = "${each.key}-ecs-tasks"
+  description = "ECS tasks security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  ingress {
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_public[each.key].id]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [var.vpc_cidrs[each.key]]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "eks_cluster" {
+  for_each    = toset(["prod", "staging"])
+  name        = "${each.key}-eks-cluster"
+  description = "EKS cluster security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "eks_nodes" {
+  for_each    = toset(["prod", "staging"])
+  name        = "${each.key}-eks-nodes"
+  description = "EKS nodes security group for ${each.key}"
+  vpc_id      = aws_vpc.main[each.key].id
+
+  ingress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    self      = true
+  }
+
+  ingress {
+    from_port       = 1025
+    to_port         = 65535
+    protocol        = "tcp"
+    security_groups = [aws_security_group.eks_cluster[each.key].id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# ============================================================
 # ECR Repositories
 # ============================================================
 
