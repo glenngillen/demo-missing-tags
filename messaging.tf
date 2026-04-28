@@ -9,6 +9,11 @@ resource "aws_sqs_queue" "orders_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "payments_dlq" {
@@ -18,6 +23,11 @@ resource "aws_sqs_queue" "payments_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "notifications_dlq" {
@@ -27,6 +37,11 @@ resource "aws_sqs_queue" "notifications_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "emails_dlq" {
@@ -36,6 +51,11 @@ resource "aws_sqs_queue" "emails_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "sms_dlq" {
@@ -45,6 +65,11 @@ resource "aws_sqs_queue" "sms_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "inventory_updates_dlq" {
@@ -54,6 +79,11 @@ resource "aws_sqs_queue" "inventory_updates_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "audit_events_dlq" {
@@ -63,6 +93,11 @@ resource "aws_sqs_queue" "audit_events_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "image_processing_dlq" {
@@ -72,6 +107,11 @@ resource "aws_sqs_queue" "image_processing_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "dead_letter_orders_dlq" {
@@ -81,6 +121,11 @@ resource "aws_sqs_queue" "dead_letter_orders_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "dead_letter_payments_dlq" {
@@ -90,6 +135,11 @@ resource "aws_sqs_queue" "dead_letter_payments_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "dead_letter_notifications_dlq" {
@@ -99,6 +149,11 @@ resource "aws_sqs_queue" "dead_letter_notifications_dlq" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 # ============================================================
@@ -119,6 +174,11 @@ resource "aws_sqs_queue" "orders" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "payments" {
@@ -135,6 +195,11 @@ resource "aws_sqs_queue" "payments" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "notifications" {
@@ -151,6 +216,11 @@ resource "aws_sqs_queue" "notifications" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "emails" {
@@ -167,6 +237,11 @@ resource "aws_sqs_queue" "emails" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "sms" {
@@ -183,6 +258,11 @@ resource "aws_sqs_queue" "sms" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "inventory_updates" {
@@ -199,6 +279,11 @@ resource "aws_sqs_queue" "inventory_updates" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "audit_events" {
@@ -215,6 +300,11 @@ resource "aws_sqs_queue" "audit_events" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "image_processing" {
@@ -231,6 +321,11 @@ resource "aws_sqs_queue" "image_processing" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "dead_letter_orders" {
@@ -247,6 +342,11 @@ resource "aws_sqs_queue" "dead_letter_orders" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "dead_letter_payments" {
@@ -263,6 +363,11 @@ resource "aws_sqs_queue" "dead_letter_payments" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "dead_letter_notifications" {
@@ -279,6 +384,11 @@ resource "aws_sqs_queue" "dead_letter_notifications" {
   })
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 # ============================================================
@@ -291,6 +401,11 @@ resource "aws_sqs_queue" "payments_fifo_dlq" {
   message_retention_seconds = 1209600
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "inventory_updates_fifo_dlq" {
@@ -299,6 +414,11 @@ resource "aws_sqs_queue" "inventory_updates_fifo_dlq" {
   message_retention_seconds = 1209600
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "audit_events_fifo_dlq" {
@@ -307,6 +427,11 @@ resource "aws_sqs_queue" "audit_events_fifo_dlq" {
   message_retention_seconds = 1209600
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "payments_fifo" {
@@ -319,6 +444,11 @@ resource "aws_sqs_queue" "payments_fifo" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "inventory_updates_fifo" {
@@ -331,6 +461,11 @@ resource "aws_sqs_queue" "inventory_updates_fifo" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sqs_queue" "audit_events_fifo" {
@@ -343,6 +478,11 @@ resource "aws_sqs_queue" "audit_events_fifo" {
   kms_data_key_reuse_period_seconds = 300
 
   
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 # SQS Queue Policies
@@ -429,6 +569,11 @@ resource "aws_sns_topic" "main" {
   ])
   name              = each.key
   kms_master_key_id = aws_kms_key.sns.id
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 # SNS → SQS subscriptions
@@ -481,6 +626,11 @@ resource "aws_kinesis_stream" "events" {
   stream_mode_details {
     stream_mode = "PROVISIONED"
   }
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_kinesis_stream" "clickstream" {
@@ -493,6 +643,11 @@ resource "aws_kinesis_stream" "clickstream" {
 
   stream_mode_details {
     stream_mode = "PROVISIONED"
+  }
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
   }
 }
 
@@ -507,6 +662,11 @@ resource "aws_kinesis_stream" "audit_log" {
   stream_mode_details {
     stream_mode = "PROVISIONED"
   }
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_kinesis_stream" "metrics" {
@@ -518,6 +678,11 @@ resource "aws_kinesis_stream" "metrics" {
 
   stream_mode_details {
     stream_mode = "ON_DEMAND"
+  }
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
   }
 }
 
@@ -580,6 +745,11 @@ resource "aws_kinesis_firehose_delivery_stream" "events_to_s3" {
       }
     }
   }
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "clickstream_to_s3" {
@@ -607,6 +777,11 @@ resource "aws_kinesis_firehose_delivery_stream" "clickstream_to_s3" {
       log_stream_name = "ClickstreamDelivery"
     }
   }
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 # ============================================================
@@ -615,6 +790,11 @@ resource "aws_kinesis_firehose_delivery_stream" "clickstream_to_s3" {
 
 resource "aws_cloudwatch_event_bus" "main" {
   name = "main-event-bus"
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_rule" "cleanup_sessions" {
@@ -622,6 +802,11 @@ resource "aws_cloudwatch_event_rule" "cleanup_sessions" {
   description         = "Trigger session cleanup Lambda daily"
   schedule_expression = "cron(0 3 * * ? *)"
   event_bus_name      = "default"
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "cleanup_sessions" {
@@ -634,6 +819,11 @@ resource "aws_cloudwatch_event_rule" "cache_warmer" {
   name                = "cache-warmer-schedule"
   description         = "Warm cache every 15 minutes"
   schedule_expression = "rate(15 minutes)"
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "cache_warmer" {
@@ -646,6 +836,11 @@ resource "aws_cloudwatch_event_rule" "generate_report" {
   name                = "daily-report-schedule"
   description         = "Generate daily reports"
   schedule_expression = "cron(0 6 * * ? *)"
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "generate_report" {
@@ -663,6 +858,11 @@ resource "aws_cloudwatch_event_rule" "order_events" {
     source      = ["app.orders"]
     detail-type = ["OrderCreated", "OrderUpdated", "OrderCancelled"]
   })
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "order_events_sqs" {
@@ -680,6 +880,11 @@ resource "aws_cloudwatch_event_rule" "payment_events" {
     source      = ["app.payments"]
     detail-type = ["PaymentProcessed", "PaymentFailed", "RefundIssued"]
   })
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "payment_events_sqs" {
@@ -703,6 +908,11 @@ resource "aws_cloudwatch_event_rule" "ec2_state_change" {
       state = ["stopped", "terminated"]
     }
   })
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "ec2_state_change_sns" {
@@ -719,6 +929,11 @@ resource "aws_cloudwatch_event_rule" "rds_events" {
     source      = ["aws.rds"]
     detail-type = ["RDS DB Instance Event"]
   })
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "rds_events_sns" {
@@ -738,6 +953,11 @@ resource "aws_cloudwatch_event_rule" "codepipeline_events" {
       state = ["FAILED", "SUCCEEDED"]
     }
   })
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "codepipeline_events_sns" {
@@ -749,6 +969,11 @@ resource "aws_cloudwatch_event_target" "codepipeline_events_sns" {
 resource "aws_cloudwatch_event_rule" "health_check" {
   name                = "health-check-schedule"
   schedule_expression = "rate(5 minutes)"
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "health_check" {
@@ -761,6 +986,11 @@ resource "aws_cloudwatch_event_target" "health_check" {
 resource "aws_cloudwatch_event_rule" "archive_records" {
   name                = "archive-records-schedule"
   schedule_expression = "cron(0 2 * * ? *)"
+  tags = {
+    Service     = "messaging"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "archive_records" {

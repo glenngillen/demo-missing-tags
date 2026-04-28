@@ -28,6 +28,11 @@ resource "aws_security_group" "ecs_tasks" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_security_group" "eks_cluster" {
@@ -41,6 +46,11 @@ resource "aws_security_group" "eks_cluster" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : "Stage"
   }
 }
 
@@ -69,6 +79,11 @@ resource "aws_security_group" "eks_nodes" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : "Stage"
   }
 }
 
@@ -99,6 +114,11 @@ resource "aws_ecr_repository" "api_gateway" {
     encryption_type = "KMS"
     kms_key = aws_kms_key.rds.arn
   }
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 resource "aws_ecr_lifecycle_policy" "api_gateway" {
   repository = aws_ecr_repository.api_gateway.name
@@ -112,6 +132,11 @@ resource "aws_ecr_repository" "user_service" {
   encryption_configuration {
     encryption_type = "KMS"
     kms_key = aws_kms_key.rds.arn
+  }
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
   }
 }
 resource "aws_ecr_lifecycle_policy" "user_service" {
@@ -127,6 +152,11 @@ resource "aws_ecr_repository" "order_service" {
     encryption_type = "KMS"
     kms_key = aws_kms_key.rds.arn
   }
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 resource "aws_ecr_lifecycle_policy" "order_service" {
   repository = aws_ecr_repository.order_service.name
@@ -141,6 +171,11 @@ resource "aws_ecr_repository" "payment_service" {
     encryption_type = "KMS"
     kms_key = aws_kms_key.rds.arn
   }
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 resource "aws_ecr_lifecycle_policy" "payment_service" {
   repository = aws_ecr_repository.payment_service.name
@@ -154,6 +189,11 @@ resource "aws_ecr_repository" "inventory_service" {
   encryption_configuration {
     encryption_type = "KMS"
     kms_key = aws_kms_key.rds.arn
+  }
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
   }
 }
 resource "aws_ecr_lifecycle_policy" "inventory_service" {
@@ -170,6 +210,11 @@ resource "aws_ecr_repository" "notification_service" {
     kms_key = aws_kms_key.rds.arn
   }
 
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 resource "aws_ecr_lifecycle_policy" "notification_service" {
   repository = aws_ecr_repository.notification_service.name
@@ -183,6 +228,11 @@ resource "aws_ecr_repository" "catalog_service" {
   encryption_configuration {
     encryption_type = "KMS"
     kms_key = aws_kms_key.rds.arn
+  }
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
   }
 }
 resource "aws_ecr_lifecycle_policy" "catalog_service" {
@@ -198,6 +248,11 @@ resource "aws_ecr_repository" "search_service" {
     encryption_type = "KMS"
     kms_key = aws_kms_key.rds.arn
   }
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 resource "aws_ecr_lifecycle_policy" "search_service" {
   repository = aws_ecr_repository.search_service.name
@@ -211,6 +266,11 @@ resource "aws_ecr_repository" "base_images" {
 
   image_scanning_configuration {
     scan_on_push = true
+  }
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
   }
 }
 
@@ -237,6 +297,11 @@ resource "aws_ecs_cluster" "main" {
         cloud_watch_log_group_name     = aws_cloudwatch_log_group.ecs_exec[each.key].name
       }
     }
+  }
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -302,6 +367,11 @@ resource "aws_ecs_task_definition" "api_gateway" {
     },
     local.ecs_xray_sidecar
   ])
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_ecs_task_definition" "user_service" {
@@ -326,6 +396,11 @@ resource "aws_ecs_task_definition" "user_service" {
     },
     local.ecs_xray_sidecar
   ])
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_ecs_task_definition" "order_service" {
@@ -350,6 +425,11 @@ resource "aws_ecs_task_definition" "order_service" {
     },
     local.ecs_xray_sidecar
   ])
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_ecs_task_definition" "payment_service" {
@@ -374,6 +454,11 @@ resource "aws_ecs_task_definition" "payment_service" {
     },
     local.ecs_xray_sidecar
   ])
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_ecs_task_definition" "inventory_service" {
@@ -398,6 +483,11 @@ resource "aws_ecs_task_definition" "inventory_service" {
     },
     local.ecs_xray_sidecar
   ])
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_ecs_task_definition" "notification_service" {
@@ -422,6 +512,11 @@ resource "aws_ecs_task_definition" "notification_service" {
     },
     local.ecs_xray_sidecar
   ])
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_ecs_task_definition" "catalog_service" {
@@ -446,6 +541,11 @@ resource "aws_ecs_task_definition" "catalog_service" {
     },
     local.ecs_xray_sidecar
   ])
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_ecs_task_definition" "search_service" {
@@ -470,6 +570,11 @@ resource "aws_ecs_task_definition" "search_service" {
     },
     local.ecs_xray_sidecar
   ])
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 # ============================================================
@@ -503,6 +608,12 @@ resource "aws_ecs_service" "api_gateway" {
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
+  propagate_tags = "SERVICE"
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_ecs_service" "user_service" {
@@ -532,6 +643,12 @@ resource "aws_ecs_service" "user_service" {
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
+  propagate_tags = "SERVICE"
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_ecs_service" "order_service" {
@@ -561,6 +678,12 @@ resource "aws_ecs_service" "order_service" {
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
+  propagate_tags = "SERVICE"
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_ecs_service" "payment_service" {
@@ -590,6 +713,12 @@ resource "aws_ecs_service" "payment_service" {
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
+  propagate_tags = "SERVICE"
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_ecs_service" "inventory_service" {
@@ -619,6 +748,12 @@ resource "aws_ecs_service" "inventory_service" {
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
+  propagate_tags = "SERVICE"
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_ecs_service" "notification_service" {
@@ -648,6 +783,12 @@ resource "aws_ecs_service" "notification_service" {
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
+  propagate_tags = "SERVICE"
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_ecs_service" "catalog_service" {
@@ -677,6 +818,12 @@ resource "aws_ecs_service" "catalog_service" {
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
+  propagate_tags = "SERVICE"
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_ecs_service" "search_service" {
@@ -706,6 +853,12 @@ resource "aws_ecs_service" "search_service" {
   deployment_controller { type = "ECS" }
   health_check_grace_period_seconds = 120
   lifecycle { ignore_changes = [desired_count] }
+  propagate_tags = "SERVICE"
+  tags = {
+    Service     = "platform"
+    Owner       = "appdev"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -719,6 +872,11 @@ resource "aws_appautoscaling_target" "ecs_api_gateway" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.api_gateway]
+  tags = {
+    Service     = "database"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_api_gateway" {
   name = "api-gateway-cpu-scaling"
@@ -754,6 +912,11 @@ resource "aws_appautoscaling_target" "ecs_user_service" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.user_service]
+  tags = {
+    Service     = "database"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_user_service" {
   name = "user-service-cpu-scaling"
@@ -789,6 +952,11 @@ resource "aws_appautoscaling_target" "ecs_order_service" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.order_service]
+  tags = {
+    Service     = "database"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_order_service" {
   name = "order-service-cpu-scaling"
@@ -824,6 +992,11 @@ resource "aws_appautoscaling_target" "ecs_payment_service" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.payment_service]
+  tags = {
+    Service     = "database"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_payment_service" {
   name = "payment-service-cpu-scaling"
@@ -859,6 +1032,11 @@ resource "aws_appautoscaling_target" "ecs_inventory_service" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.inventory_service]
+  tags = {
+    Service     = "database"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_inventory_service" {
   name = "inventory-service-cpu-scaling"
@@ -894,6 +1072,11 @@ resource "aws_appautoscaling_target" "ecs_notification_service" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.notification_service]
+  tags = {
+    Service     = "database"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_notification_service" {
   name = "notification-service-cpu-scaling"
@@ -929,6 +1112,11 @@ resource "aws_appautoscaling_target" "ecs_catalog_service" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.catalog_service]
+  tags = {
+    Service     = "database"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_catalog_service" {
   name = "catalog-service-cpu-scaling"
@@ -964,6 +1152,11 @@ resource "aws_appautoscaling_target" "ecs_search_service" {
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   depends_on = [aws_ecs_service.search_service]
+  tags = {
+    Service     = "database"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 resource "aws_appautoscaling_policy" "ecs_cpu_search_service" {
   name = "search-service-cpu-scaling"
@@ -1026,6 +1219,11 @@ resource "aws_eks_cluster" "main" {
   depends_on = [
     aws_iam_role_policy_attachment.eks_cluster
   ]
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : "Stage"
+  }
 }
 
 resource "aws_eks_node_group" "general" {
@@ -1058,6 +1256,11 @@ resource "aws_eks_node_group" "general" {
     aws_iam_role_policy_attachment.eks_node_ecr,
     aws_iam_role_policy_attachment.eks_node_cni,
   ]
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : "Stage"
+  }
 }
 
 resource "aws_eks_node_group" "memory_optimized" {
@@ -1095,6 +1298,11 @@ resource "aws_eks_node_group" "memory_optimized" {
     aws_iam_role_policy_attachment.eks_node_ecr,
     aws_iam_role_policy_attachment.eks_node_cni,
   ]
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_eks_node_group" "compute_optimized" {
@@ -1132,28 +1340,53 @@ resource "aws_eks_node_group" "compute_optimized" {
     aws_iam_role_policy_attachment.eks_node_ecr,
     aws_iam_role_policy_attachment.eks_node_cni,
   ]
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_eks_addon" "coredns" {
   for_each     = toset(["prod", "staging"])
   cluster_name = aws_eks_cluster.main[each.key].name
   addon_name   = "coredns"
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : "Stage"
+  }
 }
 
 resource "aws_eks_addon" "kube_proxy" {
   for_each     = toset(["prod", "staging"])
   cluster_name = aws_eks_cluster.main[each.key].name
   addon_name   = "kube-proxy"
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : "Stage"
+  }
 }
 
 resource "aws_eks_addon" "vpc_cni" {
   for_each     = toset(["prod", "staging"])
   cluster_name = aws_eks_cluster.main[each.key].name
   addon_name   = "vpc-cni"
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : "Stage"
+  }
 }
 
 resource "aws_eks_addon" "ebs_csi_driver" {
   for_each     = toset(["prod", "staging"])
   cluster_name = aws_eks_cluster.main[each.key].name
   addon_name   = "aws-ebs-csi-driver"
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : "Stage"
+  }
 }

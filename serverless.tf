@@ -28,6 +28,11 @@ resource "aws_lambda_function" "process_order" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "send_email" {
@@ -56,6 +61,11 @@ resource "aws_lambda_function" "send_email" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "resize_image" {
@@ -84,6 +94,11 @@ resource "aws_lambda_function" "resize_image" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "validate_payment" {
@@ -112,6 +127,11 @@ resource "aws_lambda_function" "validate_payment" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "sync_inventory" {
@@ -140,6 +160,11 @@ resource "aws_lambda_function" "sync_inventory" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "generate_report" {
@@ -168,6 +193,11 @@ resource "aws_lambda_function" "generate_report" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "cleanup_sessions" {
@@ -196,6 +226,11 @@ resource "aws_lambda_function" "cleanup_sessions" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "data_transformer" {
@@ -224,6 +259,11 @@ resource "aws_lambda_function" "data_transformer" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "notification_sender" {
@@ -252,6 +292,11 @@ resource "aws_lambda_function" "notification_sender" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "cache_warmer" {
@@ -280,6 +325,11 @@ resource "aws_lambda_function" "cache_warmer" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "batch_processor" {
@@ -308,6 +358,11 @@ resource "aws_lambda_function" "batch_processor" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "stream_consumer" {
@@ -336,6 +391,11 @@ resource "aws_lambda_function" "stream_consumer" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "api_authorizer" {
@@ -364,6 +424,11 @@ resource "aws_lambda_function" "api_authorizer" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "migrate_data" {
@@ -392,6 +457,11 @@ resource "aws_lambda_function" "migrate_data" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_function" "archive_records" {
@@ -420,6 +490,11 @@ resource "aws_lambda_function" "archive_records" {
   layers = [aws_lambda_layer_version.shared_utils.arn]
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 # ============================================================
@@ -716,6 +791,11 @@ resource "aws_lambda_event_source_mapping" "sqs_orders" {
   scaling_config {
     maximum_concurrency = 100
   }
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "sqs_notifications" {
@@ -726,18 +806,33 @@ resource "aws_lambda_event_source_mapping" "sqs_notifications" {
   scaling_config {
     maximum_concurrency = 50
   }
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "sqs_emails" {
   event_source_arn = aws_sqs_queue.emails.arn
   function_name    = aws_lambda_function.send_email.arn
   batch_size       = 50
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "sqs_image_processing" {
   event_source_arn = aws_sqs_queue.image_processing.arn
   function_name    = aws_lambda_function.resize_image.arn
   batch_size       = 5
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "kinesis" {
@@ -752,6 +847,11 @@ resource "aws_lambda_event_source_mapping" "kinesis" {
     on_failure {
       destination_arn = aws_sqs_queue.dead_letter_notifications.arn
     }
+  }
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
   }
 }
 
@@ -804,6 +904,11 @@ resource "aws_api_gateway_rest_api" "main" {
   }
 
   
+  tags = {
+    Service     = "api"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_api_gateway_resource" "v1" {
@@ -903,6 +1008,11 @@ resource "aws_api_gateway_stage" "prod" {
     format          = "$context.requestId $context.status $context.responseLatency"
   }
 
+  tags = {
+    Service     = "api"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_api_gateway_stage" "staging" {
@@ -917,6 +1027,11 @@ resource "aws_api_gateway_stage" "staging" {
     format          = "$context.requestId $context.status $context.responseLatency"
   }
 
+  tags = {
+    Service     = "api"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_api_gateway_usage_plan" "main" {
@@ -935,6 +1050,11 @@ resource "aws_api_gateway_usage_plan" "main" {
   throttle_settings {
     burst_limit = 5000
     rate_limit  = 1000
+  }
+  tags = {
+    Service     = "api"
+    Owner       = "appdev"
+    Environment = "Prod"
   }
 }
 
@@ -962,6 +1082,11 @@ resource "aws_apigatewayv2_api" "websocket" {
   route_selection_expression = "$request.body.action"
 
   
+  tags = {
+    Service     = "api"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_apigatewayv2_api" "internal" {
@@ -976,6 +1101,11 @@ resource "aws_apigatewayv2_api" "internal" {
   }
 
   
+  tags = {
+    Service     = "api"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_apigatewayv2_stage" "websocket_prod" {
@@ -990,12 +1120,22 @@ resource "aws_apigatewayv2_stage" "websocket_prod" {
     throttling_burst_limit   = 5000
     throttling_rate_limit    = 1000
   }
+  tags = {
+    Service     = "api"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_apigatewayv2_stage" "internal_prod" {
   api_id      = aws_apigatewayv2_api.internal.id
   name        = "prod"
   auto_deploy = true
+  tags = {
+    Service     = "api"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 # ============================================================
@@ -1040,6 +1180,11 @@ resource "aws_sfn_state_machine" "order_fulfillment" {
   })
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sfn_state_machine" "data_pipeline" {
@@ -1090,6 +1235,11 @@ resource "aws_sfn_state_machine" "data_pipeline" {
   })
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_sfn_state_machine" "user_onboarding" {
@@ -1135,4 +1285,9 @@ resource "aws_sfn_state_machine" "user_onboarding" {
   })
 
   
+  tags = {
+    Service     = "serverless"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }

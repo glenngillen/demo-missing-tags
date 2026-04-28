@@ -28,6 +28,11 @@ resource "aws_security_group" "alb_public" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_security_group" "alb_internal" {
@@ -56,6 +61,11 @@ resource "aws_security_group" "alb_internal" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_security_group" "ec2_bastion" {
@@ -76,6 +86,11 @@ resource "aws_security_group" "ec2_bastion" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -106,6 +121,11 @@ resource "aws_lb" "main" {
     prefix  = "${each.key}/alb-main"
     enabled = true
   }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_listener" "main_https" {
@@ -119,6 +139,11 @@ resource "aws_lb_listener" "main_https" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.web[each.key].arn
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -135,6 +160,11 @@ resource "aws_lb_listener" "main_http_redirect" {
       protocol    = "HTTPS"
       status_code = "HTTP_301"
     }
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -164,6 +194,11 @@ resource "aws_lb" "api" {
     prefix  = "${each.key}/alb-api"
     enabled = true
   }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_listener" "api_https" {
@@ -177,6 +212,11 @@ resource "aws_lb_listener" "api_https" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.api[each.key].arn
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -193,6 +233,11 @@ resource "aws_lb_listener" "api_http_redirect" {
       protocol    = "HTTPS"
       status_code = "HTTP_301"
     }
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -211,6 +256,11 @@ resource "aws_lb" "internal" {
     aws_subnet.private["${each.key}-1"].id,
     aws_subnet.private["${each.key}-2"].id,
   ]
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_listener" "internal" {
@@ -222,6 +272,11 @@ resource "aws_lb_listener" "internal" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.internal[each.key].arn
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -250,6 +305,11 @@ resource "aws_lb_target_group" "web" {
   }
 
   deregistration_delay = 30
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_target_group" "api" {
@@ -271,6 +331,11 @@ resource "aws_lb_target_group" "api" {
     timeout             = 5
     unhealthy_threshold = 3
   }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_target_group" "internal" {
@@ -286,6 +351,11 @@ resource "aws_lb_target_group" "internal" {
     protocol = "TCP"
     port     = "traffic-port"
     interval = 30
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -309,6 +379,11 @@ resource "aws_lb_target_group" "api_gateway" {
     unhealthy_threshold = 3
   }
   deregistration_delay = 30
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_target_group" "user_service" {
@@ -330,6 +405,11 @@ resource "aws_lb_target_group" "user_service" {
     unhealthy_threshold = 3
   }
   deregistration_delay = 30
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_target_group" "order_service" {
@@ -351,6 +431,11 @@ resource "aws_lb_target_group" "order_service" {
     unhealthy_threshold = 3
   }
   deregistration_delay = 30
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_target_group" "payment_service" {
@@ -372,6 +457,11 @@ resource "aws_lb_target_group" "payment_service" {
     unhealthy_threshold = 3
   }
   deregistration_delay = 30
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_target_group" "inventory_service" {
@@ -393,6 +483,11 @@ resource "aws_lb_target_group" "inventory_service" {
     unhealthy_threshold = 3
   }
   deregistration_delay = 30
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_target_group" "notification_service" {
@@ -414,6 +509,11 @@ resource "aws_lb_target_group" "notification_service" {
     unhealthy_threshold = 3
   }
   deregistration_delay = 30
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_target_group" "catalog_service" {
@@ -435,6 +535,11 @@ resource "aws_lb_target_group" "catalog_service" {
     unhealthy_threshold = 3
   }
   deregistration_delay = 30
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_lb_target_group" "search_service" {
@@ -456,6 +561,11 @@ resource "aws_lb_target_group" "search_service" {
     unhealthy_threshold = 3
   }
   deregistration_delay = 30
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ALB Listener Rules for microservices
@@ -471,6 +581,11 @@ resource "aws_lb_listener_rule" "api_gateway" {
       values = ["/api/api-gateway/*"]
     }
   }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lb_listener_rule" "user_service" {
@@ -484,6 +599,11 @@ resource "aws_lb_listener_rule" "user_service" {
     path_pattern {
       values = ["/api/user-service/*"]
     }
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = "Prod"
   }
 }
 
@@ -499,6 +619,11 @@ resource "aws_lb_listener_rule" "order_service" {
       values = ["/api/order-service/*"]
     }
   }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lb_listener_rule" "payment_service" {
@@ -512,6 +637,11 @@ resource "aws_lb_listener_rule" "payment_service" {
     path_pattern {
       values = ["/api/payment-service/*"]
     }
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = "Prod"
   }
 }
 
@@ -527,6 +657,11 @@ resource "aws_lb_listener_rule" "inventory_service" {
       values = ["/api/inventory-service/*"]
     }
   }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lb_listener_rule" "notification_service" {
@@ -540,6 +675,11 @@ resource "aws_lb_listener_rule" "notification_service" {
     path_pattern {
       values = ["/api/notification-service/*"]
     }
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = "Prod"
   }
 }
 
@@ -555,6 +695,11 @@ resource "aws_lb_listener_rule" "catalog_service" {
       values = ["/api/catalog-service/*"]
     }
   }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_lb_listener_rule" "search_service" {
@@ -568,6 +713,11 @@ resource "aws_lb_listener_rule" "search_service" {
     path_pattern {
       values = ["/api/search-service/*"]
     }
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "platform"
+    Environment = "Prod"
   }
 }
 
@@ -599,6 +749,11 @@ resource "aws_instance" "bastion" {
     volume_size           = 20
     delete_on_termination = true
     encrypted             = true
+    tags = {
+      Service     = "platform"
+      Owner       = "platform"
+      Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+    }
   }
 
   user_data = base64encode(<<-EOF
@@ -607,11 +762,21 @@ resource "aws_instance" "bastion" {
     yum install -y amazon-cloudwatch-agent
   EOF
   )
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_key_pair" "deployer" {
   key_name   = "deployer-key"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC0placeholder deployer@example.com"
+  tags = {
+    Service     = "platform"
+    Owner       = "platform"
+    Environment = "Prod"
+  }
 }
 
 # ============================================================
@@ -661,6 +826,11 @@ resource "aws_launch_template" "worker" {
     systemctl enable docker
   EOF
   )
+  tags = {
+    Service     = "compute"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_autoscaling_group" "worker" {
@@ -691,6 +861,22 @@ resource "aws_autoscaling_group" "worker" {
     preferences {
       min_healthy_percentage = 50
     }
+  }
+
+  tag {
+    key                 = "Service"
+    value               = "compute"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Owner"
+    value               = "platform"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Environment"
+    value               = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+    propagate_at_launch = true
   }
 }
 
@@ -764,6 +950,11 @@ resource "aws_launch_template" "app_server" {
     http_tokens                 = "required"
     http_put_response_hop_limit = 1
   }
+  tags = {
+    Service     = "compute"
+    Owner       = "platform"
+    Environment = each.key == "prod" ? "Prod" : "Stage"
+  }
 }
 
 resource "aws_autoscaling_group" "app_server" {
@@ -794,6 +985,22 @@ resource "aws_autoscaling_group" "app_server" {
     preferences {
       min_healthy_percentage = 70
     }
+  }
+
+  tag {
+    key                 = "Service"
+    value               = "web"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Owner"
+    value               = "appdev"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Environment"
+    value               = each.key == "prod" ? "Prod" : "Stage"
+    propagate_at_launch = true
   }
 }
 

@@ -191,6 +191,11 @@ resource "aws_cloudfront_distribution" "main" {
     prefix          = "cloudfront/main/"
   }
 
+  tags = {
+    Service     = "web"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }
 
 # Static assets CDN distribution
@@ -250,6 +255,11 @@ resource "aws_cloudfront_distribution" "static" {
     include_cookies = false
     bucket          = aws_s3_bucket.infra["access-logs"].bucket_domain_name
     prefix          = "cloudfront/static/"
+  }
+  tags = {
+    Service     = "web"
+    Owner       = "appdev"
+    Environment = "Prod"
   }
 }
 
@@ -311,4 +321,9 @@ resource "aws_cloudfront_distribution" "admin" {
     minimum_protocol_version = "TLSv1.2_2021"
   }
 
+  tags = {
+    Service     = "web"
+    Owner       = "appdev"
+    Environment = "Prod"
+  }
 }

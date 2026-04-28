@@ -7,6 +7,11 @@ resource "aws_vpc" "main" {
   cidr_block           = each.value
   enable_dns_support   = true
   enable_dns_hostnames = true
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -16,6 +21,11 @@ resource "aws_vpc" "main" {
 resource "aws_internet_gateway" "main" {
   for_each = var.vpc_cidrs
   vpc_id   = aws_vpc.main[each.key].id
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -37,6 +47,11 @@ resource "aws_eip" "nat" {
   }
 
   domain = "vpc"
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.value.env == "prod" ? "Prod" : each.value.env == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -61,6 +76,11 @@ resource "aws_nat_gateway" "main" {
   subnet_id     = aws_subnet.public["${each.value.env}-${each.value.idx}"].id
 
   depends_on = [aws_internet_gateway.main]
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.value.env == "prod" ? "Prod" : each.value.env == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -86,6 +106,11 @@ resource "aws_subnet" "public" {
   cidr_block              = each.value.cidr
   availability_zone       = each.value.az
   map_public_ip_on_launch = true
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.value.env == "prod" ? "Prod" : each.value.env == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -110,6 +135,11 @@ resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main[each.value.env].id
   cidr_block        = each.value.cidr
   availability_zone = each.value.az
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.value.env == "prod" ? "Prod" : each.value.env == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -134,6 +164,11 @@ resource "aws_subnet" "database" {
   vpc_id            = aws_vpc.main[each.value.env].id
   cidr_block        = each.value.cidr
   availability_zone = each.value.az
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.value.env == "prod" ? "Prod" : each.value.env == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -143,6 +178,11 @@ resource "aws_subnet" "database" {
 resource "aws_route_table" "public" {
   for_each = toset(var.environments)
   vpc_id   = aws_vpc.main[each.key].id
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_route" "public_internet" {
@@ -187,6 +227,11 @@ resource "aws_route_table" "private" {
   }
 
   vpc_id = aws_vpc.main[each.value.env].id
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.value.env == "prod" ? "Prod" : each.value.env == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_route" "private_nat" {
@@ -249,18 +294,33 @@ resource "aws_vpc_peering_connection" "prod_staging" {
   vpc_id      = aws_vpc.main["prod"].id
   peer_vpc_id = aws_vpc.main["staging"].id
   auto_accept = true
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_vpc_peering_connection" "prod_dev" {
   vpc_id      = aws_vpc.main["prod"].id
   peer_vpc_id = aws_vpc.main["dev"].id
   auto_accept = true
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_vpc_peering_connection" "staging_dev" {
   vpc_id      = aws_vpc.main["staging"].id
   peer_vpc_id = aws_vpc.main["dev"].id
   auto_accept = true
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = "Prod"
+  }
 }
 
 resource "aws_route" "prod_to_staging" {
@@ -318,6 +378,11 @@ resource "aws_network_acl" "public" {
     from_port  = 0
     to_port    = 65535
   }
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_network_acl" "private" {
@@ -349,6 +414,11 @@ resource "aws_network_acl" "private" {
     cidr_block = "0.0.0.0/0"
     from_port  = 0
     to_port    = 65535
+  }
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -391,6 +461,11 @@ resource "aws_network_acl" "database" {
     from_port  = 0
     to_port    = 65535
   }
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -418,6 +493,11 @@ resource "aws_db_subnet_group" "main" {
     aws_subnet.database["${each.key}-1"].id,
     aws_subnet.database["${each.key}-2"].id,
   ]
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_elasticache_subnet_group" "main" {
@@ -429,6 +509,11 @@ resource "aws_elasticache_subnet_group" "main" {
     aws_subnet.private["${each.key}-1"].id,
     aws_subnet.private["${each.key}-2"].id,
   ]
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -454,6 +539,11 @@ resource "aws_security_group" "vpc_endpoints" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 # ============================================================
@@ -470,6 +560,11 @@ resource "aws_vpc_endpoint" "s3" {
     aws_route_table.private["${each.key}-1"].id,
     aws_route_table.private["${each.key}-2"].id,
   ]
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_vpc_endpoint" "dynamodb" {
@@ -482,6 +577,11 @@ resource "aws_vpc_endpoint" "dynamodb" {
     aws_route_table.private["${each.key}-1"].id,
     aws_route_table.private["${each.key}-2"].id,
   ]
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_vpc_endpoint" "ssm" {
@@ -497,6 +597,11 @@ resource "aws_vpc_endpoint" "ssm" {
     aws_subnet.private["${each.key}-1"].id,
     aws_subnet.private["${each.key}-2"].id,
   ]
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_vpc_endpoint" "secrets_manager" {
@@ -512,6 +617,11 @@ resource "aws_vpc_endpoint" "secrets_manager" {
     aws_subnet.private["${each.key}-1"].id,
     aws_subnet.private["${each.key}-2"].id,
   ]
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_vpc_endpoint" "ecr_api" {
@@ -527,6 +637,11 @@ resource "aws_vpc_endpoint" "ecr_api" {
     aws_subnet.private["${each.key}-1"].id,
     aws_subnet.private["${each.key}-2"].id,
   ]
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
@@ -542,4 +657,9 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
     aws_subnet.private["${each.key}-1"].id,
     aws_subnet.private["${each.key}-2"].id,
   ]
+  tags = {
+    Service     = "networking"
+    Owner       = "networkops"
+    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
+  }
 }
