@@ -76,11 +76,6 @@ resource "aws_codebuild_project" "build_api_gateway" {
       location = "${aws_s3_bucket.infra["codebuild-cache"].id}/api-gateway/logs"
     }
   }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_codebuild_project" "test_api_gateway" {
   name = "api-gateway-test"
@@ -113,11 +108,6 @@ resource "aws_codebuild_project" "test_api_gateway" {
       group_name = aws_cloudwatch_log_group.codebuild_api_gateway.name
       stream_name = "test"
     }
-  }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
   }
 }
 
@@ -172,11 +162,6 @@ resource "aws_codebuild_project" "build_user_service" {
       location = "${aws_s3_bucket.infra["codebuild-cache"].id}/user-service/logs"
     }
   }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_codebuild_project" "test_user_service" {
   name = "user-service-test"
@@ -209,11 +194,6 @@ resource "aws_codebuild_project" "test_user_service" {
       group_name = aws_cloudwatch_log_group.codebuild_user_service.name
       stream_name = "test"
     }
-  }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
   }
 }
 
@@ -268,11 +248,6 @@ resource "aws_codebuild_project" "build_order_service" {
       location = "${aws_s3_bucket.infra["codebuild-cache"].id}/order-service/logs"
     }
   }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_codebuild_project" "test_order_service" {
   name = "order-service-test"
@@ -305,11 +280,6 @@ resource "aws_codebuild_project" "test_order_service" {
       group_name = aws_cloudwatch_log_group.codebuild_order_service.name
       stream_name = "test"
     }
-  }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
   }
 }
 
@@ -364,11 +334,6 @@ resource "aws_codebuild_project" "build_payment_service" {
       location = "${aws_s3_bucket.infra["codebuild-cache"].id}/payment-service/logs"
     }
   }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_codebuild_project" "test_payment_service" {
   name = "payment-service-test"
@@ -401,11 +366,6 @@ resource "aws_codebuild_project" "test_payment_service" {
       group_name = aws_cloudwatch_log_group.codebuild_payment_service.name
       stream_name = "test"
     }
-  }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
   }
 }
 
@@ -460,11 +420,6 @@ resource "aws_codebuild_project" "build_inventory_service" {
       location = "${aws_s3_bucket.infra["codebuild-cache"].id}/inventory-service/logs"
     }
   }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_codebuild_project" "test_inventory_service" {
   name = "inventory-service-test"
@@ -497,11 +452,6 @@ resource "aws_codebuild_project" "test_inventory_service" {
       group_name = aws_cloudwatch_log_group.codebuild_inventory_service.name
       stream_name = "test"
     }
-  }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
   }
 }
 
@@ -556,11 +506,6 @@ resource "aws_codebuild_project" "build_notification_service" {
       location = "${aws_s3_bucket.infra["codebuild-cache"].id}/notification-service/logs"
     }
   }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_codebuild_project" "test_notification_service" {
   name = "notification-service-test"
@@ -593,11 +538,6 @@ resource "aws_codebuild_project" "test_notification_service" {
       group_name = aws_cloudwatch_log_group.codebuild_notification_service.name
       stream_name = "test"
     }
-  }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
   }
 }
 
@@ -652,11 +592,6 @@ resource "aws_codebuild_project" "build_catalog_service" {
       location = "${aws_s3_bucket.infra["codebuild-cache"].id}/catalog-service/logs"
     }
   }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_codebuild_project" "test_catalog_service" {
   name = "catalog-service-test"
@@ -689,11 +624,6 @@ resource "aws_codebuild_project" "test_catalog_service" {
       group_name = aws_cloudwatch_log_group.codebuild_catalog_service.name
       stream_name = "test"
     }
-  }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
   }
 }
 
@@ -748,11 +678,6 @@ resource "aws_codebuild_project" "build_search_service" {
       location = "${aws_s3_bucket.infra["codebuild-cache"].id}/search-service/logs"
     }
   }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_codebuild_project" "test_search_service" {
   name = "search-service-test"
@@ -785,11 +710,6 @@ resource "aws_codebuild_project" "test_search_service" {
       group_name = aws_cloudwatch_log_group.codebuild_search_service.name
       stream_name = "test"
     }
-  }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
   }
 }
 
@@ -825,11 +745,6 @@ resource "aws_codebuild_project" "security_scan" {
             - snyk test --all-projects
             - snyk iac test --severity-threshold=high
     EOF
-  }
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
   }
 }
 
@@ -1665,11 +1580,6 @@ resource "aws_codestarconnections_connection" "github" {
 resource "aws_codedeploy_app" "main" {
   name             = "main-app"
   compute_platform = "ECS"
-  tags = {
-    Service     = "cicd"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_codedeploy_deployment_group" "main" {
@@ -1770,11 +1680,6 @@ resource "aws_iam_role" "config" {
       }
     ]
   })
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "config" {
@@ -1792,11 +1697,6 @@ resource "aws_config_config_rule" "encrypted_volumes" {
   }
 
   depends_on = [aws_config_configuration_recorder.main]
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_config_config_rule" "rds_encrypted" {
@@ -1808,11 +1708,6 @@ resource "aws_config_config_rule" "rds_encrypted" {
   }
 
   depends_on = [aws_config_configuration_recorder.main]
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_config_config_rule" "s3_public_access" {
@@ -1824,11 +1719,6 @@ resource "aws_config_config_rule" "s3_public_access" {
   }
 
   depends_on = [aws_config_configuration_recorder.main]
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_config_config_rule" "mfa_enabled" {
@@ -1840,11 +1730,6 @@ resource "aws_config_config_rule" "mfa_enabled" {
   }
 
   depends_on = [aws_config_configuration_recorder.main]
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_config_config_rule" "vpc_flow_logs_enabled" {
@@ -1856,9 +1741,4 @@ resource "aws_config_config_rule" "vpc_flow_logs_enabled" {
   }
 
   depends_on = [aws_config_configuration_recorder.main]
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }

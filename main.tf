@@ -49,11 +49,6 @@ resource "aws_acm_certificate" "main" {
   lifecycle {
     create_before_destroy = true
   }
-  tags = {
-    Service     = "web"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_acm_certificate" "cdn" {
@@ -63,11 +58,6 @@ resource "aws_acm_certificate" "cdn" {
 
   lifecycle {
     create_before_destroy = true
-  }
-  tags = {
-    Service     = "web"
-    Owner       = "platform"
-    Environment = "Prod"
   }
 }
 
@@ -79,11 +69,6 @@ resource "aws_acm_certificate" "staging" {
   lifecycle {
     create_before_destroy = true
   }
-  tags = {
-    Service     = "web"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 # ------------------------------------------------------------
@@ -92,11 +77,6 @@ resource "aws_acm_certificate" "staging" {
 
 resource "aws_route53_zone" "main" {
   name = "example.com"
-  tags = {
-    Service     = "networking"
-    Owner       = "networkops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_route53_zone" "internal" {
@@ -104,11 +84,6 @@ resource "aws_route53_zone" "internal" {
 
   vpc {
     vpc_id = aws_vpc.main["prod"].id
-  }
-  tags = {
-    Service     = "networking"
-    Owner       = "networkops"
-    Environment = "Prod"
   }
 }
 
@@ -188,11 +163,6 @@ resource "aws_route53_health_check" "main" {
   resource_path     = "/health"
   failure_threshold = 3
   request_interval  = 30
-  tags = {
-    Service     = "networking"
-    Owner       = "networkops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_route53_health_check" "api" {
@@ -202,11 +172,6 @@ resource "aws_route53_health_check" "api" {
   resource_path     = "/health"
   failure_threshold = 3
   request_interval  = 30
-  tags = {
-    Service     = "networking"
-    Owner       = "networkops"
-    Environment = "Prod"
-  }
 }
 
 # ------------------------------------------------------------
@@ -218,11 +183,6 @@ resource "aws_ssm_parameter" "db_host" {
   name     = "/${each.key}/database/host"
   type     = "String"
   value    = aws_db_instance.main[each.key].address
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_ssm_parameter" "db_password" {
@@ -231,11 +191,6 @@ resource "aws_ssm_parameter" "db_password" {
   type     = "SecureString"
   value    = random_password.db_master.result
   key_id   = aws_kms_key.ssm.id
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_ssm_parameter" "redis_host" {
@@ -243,11 +198,6 @@ resource "aws_ssm_parameter" "redis_host" {
   name     = "/${each.key}/redis/host"
   type     = "String"
   value    = aws_elasticache_replication_group.main[each.key].primary_endpoint_address
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_ssm_parameter" "app_secret" {
@@ -256,11 +206,6 @@ resource "aws_ssm_parameter" "app_secret" {
   type     = "SecureString"
   value    = random_password.db_master.result
   key_id   = aws_kms_key.ssm.id
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_ssm_parameter" "jwt_secret" {
@@ -269,11 +214,6 @@ resource "aws_ssm_parameter" "jwt_secret" {
   type     = "SecureString"
   value    = random_password.redis_auth.result
   key_id   = aws_kms_key.ssm.id
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_ssm_parameter" "stripe_key" {
@@ -282,11 +222,6 @@ resource "aws_ssm_parameter" "stripe_key" {
   type     = "SecureString"
   value    = "sk_test_placeholder_${each.key}"
   key_id   = aws_kms_key.ssm.id
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_ssm_parameter" "sendgrid_key" {
@@ -295,11 +230,6 @@ resource "aws_ssm_parameter" "sendgrid_key" {
   type     = "SecureString"
   value    = "SG.placeholder_${each.key}"
   key_id   = aws_kms_key.ssm.id
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_ssm_parameter" "twilio_sid" {
@@ -308,11 +238,6 @@ resource "aws_ssm_parameter" "twilio_sid" {
   type     = "SecureString"
   value    = "AC_placeholder_${each.key}"
   key_id   = aws_kms_key.ssm.id
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 # ------------------------------------------------------------
@@ -323,11 +248,6 @@ resource "aws_secretsmanager_secret" "db_credentials" {
   for_each = toset(var.environments)
   name     = "${each.key}/database/credentials"
   kms_key_id = aws_kms_key.secrets.id
-  tags = {
-    Service     = "security"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_secretsmanager_secret_version" "db_credentials" {
@@ -346,11 +266,6 @@ resource "aws_secretsmanager_secret" "api_keys" {
   for_each = toset(var.environments)
   name     = "${each.key}/app/api_keys"
   kms_key_id = aws_kms_key.secrets.id
-  tags = {
-    Service     = "security"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_secretsmanager_secret_version" "api_keys" {
@@ -367,11 +282,6 @@ resource "aws_secretsmanager_secret" "third_party_creds" {
   for_each = toset(["salesforce", "hubspot", "datadog", "pagerduty", "slack"])
   name     = "integrations/${each.key}/credentials"
   kms_key_id = aws_kms_key.secrets.id
-  tags = {
-    Service     = "security"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_secretsmanager_secret_version" "third_party_creds" {
@@ -466,11 +376,6 @@ resource "aws_wafv2_web_acl" "main" {
     metric_name                = "MainWAFMetric"
     sampled_requests_enabled   = true
   }
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_wafv2_web_acl" "cdn" {
@@ -509,11 +414,6 @@ resource "aws_wafv2_web_acl" "cdn" {
     metric_name                = "CDNWAFMetric"
     sampled_requests_enabled   = true
   }
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_wafv2_ip_set" "blocked_ips" {
@@ -521,11 +421,6 @@ resource "aws_wafv2_ip_set" "blocked_ips" {
   scope              = "REGIONAL"
   ip_address_version = "IPV4"
   addresses          = []
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_wafv2_web_acl_association" "main" {

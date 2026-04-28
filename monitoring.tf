@@ -6,81 +6,41 @@ resource "aws_cloudwatch_log_group" "ecs_api_gateway" {
   name              = "/ecs/api-gateway"
   retention_in_days = 30
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "ecs_user_service" {
   name              = "/ecs/user-service"
   retention_in_days = 30
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "ecs_order_service" {
   name              = "/ecs/order-service"
   retention_in_days = 30
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "ecs_payment_service" {
   name              = "/ecs/payment-service"
   retention_in_days = 30
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "ecs_inventory_service" {
   name              = "/ecs/inventory-service"
   retention_in_days = 30
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "ecs_notification_service"{
   name = "/ecs/notification-service"
   retention_in_days = 30
   kms_key_id = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "ecs_catalog_service" {
   name              = "/ecs/catalog-service"
   retention_in_days = 30
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "ecs_search_service" {
   name              = "/ecs/search-service"
   retention_in_days = 30
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "ecs_exec" {
@@ -88,162 +48,82 @@ resource "aws_cloudwatch_log_group" "ecs_exec" {
   name              = "/ecs/exec/${each.key}"
   retention_in_days = 7
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "lambda_process_order" {
   name              = "/aws/lambda/process-order"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_send_email" {
   name              = "/aws/lambda/send-email"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_resize_image" {
   name              = "/aws/lambda/resize-image"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_validate_payment" {
   name              = "/aws/lambda/validate-payment"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_sync_inventory" {
   name              = "/aws/lambda/sync-inventory"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_generate_report" {
   name              = "/aws/lambda/generate-report"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_cleanup_sessions" {
   name              = "/aws/lambda/cleanup-sessions"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_data_transformer" {
   name              = "/aws/lambda/data-transformer"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_notification_sender"{
   name = "/aws/lambda/notification-sender"
   retention_in_days = 14
   kms_key_id = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_cache_warmer" {
   name              = "/aws/lambda/cache-warmer"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_batch_processor" {
   name              = "/aws/lambda/batch-processor"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_stream_consumer" {
   name              = "/aws/lambda/stream-consumer"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_api_authorizer" {
   name              = "/aws/lambda/api-authorizer"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_migrate_data" {
   name              = "/aws/lambda/migrate-data"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "lambda_archive_records" {
   name              = "/aws/lambda/archive-records"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
@@ -251,11 +131,6 @@ resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
   name              = "/aws/vpc/flowlogs/${each.key}"
   retention_in_days = 90
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "rds" {
@@ -263,11 +138,6 @@ resource "aws_cloudwatch_log_group" "rds" {
   name              = "/aws/rds/${each.key}/postgresql"
   retention_in_days = 30
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "redis" {
@@ -275,11 +145,6 @@ resource "aws_cloudwatch_log_group" "redis" {
   name              = "/aws/elasticache/${each.key}/redis"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "eks" {
@@ -287,103 +152,53 @@ resource "aws_cloudwatch_log_group" "eks" {
   name              = "/aws/eks/${each.key}/cluster"
   retention_in_days = 30
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : "Stage"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "api_gateway" {
   name              = "/aws/api-gateway/main"
   retention_in_days = 30
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "codebuild_api_gateway" {
   name              = "/aws/codebuild/api-gateway"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "codebuild_user_service" {
   name              = "/aws/codebuild/user-service"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "codebuild_order_service" {
   name              = "/aws/codebuild/order-service"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "codebuild_payment_service" {
   name              = "/aws/codebuild/payment-service"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "codebuild_inventory_service" {
   name              = "/aws/codebuild/inventory-service"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "codebuild_notification_service"{
   name = "/aws/codebuild/notification-service"
   retention_in_days = 14
   kms_key_id = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "codebuild_catalog_service" {
   name              = "/aws/codebuild/catalog-service"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_log_group" "codebuild_search_service" {
   name              = "/aws/codebuild/search-service"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "opensearch" {
@@ -391,11 +206,6 @@ resource "aws_cloudwatch_log_group" "opensearch" {
   name              = "/aws/opensearch/${each.key}"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : "Stage"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "msk" {
@@ -403,55 +213,30 @@ resource "aws_cloudwatch_log_group" "msk" {
   name              = "/aws/msk/${each.key}"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "firehose" {
   name              = "/aws/kinesisfirehose/delivery"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "waf" {
   name              = "aws-waf-logs-main"
   retention_in_days = 90
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "cloudtrail" {
   name              = "/aws/cloudtrail/main"
   retention_in_days = 365
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "xray" {
   name              = "/aws/xray"
   retention_in_days = 14
   kms_key_id        = aws_kms_key.cloudwatch.arn
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 # ============================================================
@@ -477,11 +262,6 @@ resource "aws_cloudwatch_metric_alarm" "rds_cpu" {
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
   ok_actions    = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "rds_connections" {
@@ -501,11 +281,6 @@ resource "aws_cloudwatch_metric_alarm" "rds_connections" {
   }
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "rds_free_storage" {
@@ -525,11 +300,6 @@ resource "aws_cloudwatch_metric_alarm" "rds_free_storage" {
   }
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "rds_read_latency" {
@@ -549,11 +319,6 @@ resource "aws_cloudwatch_metric_alarm" "rds_read_latency" {
   }
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "rds_write_latency" {
@@ -573,11 +338,6 @@ resource "aws_cloudwatch_metric_alarm" "rds_write_latency" {
   }
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 # ============================================================
@@ -600,11 +360,6 @@ resource "aws_cloudwatch_metric_alarm" "redis_cpu" {
   }
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "redis_memory" {
@@ -623,11 +378,6 @@ resource "aws_cloudwatch_metric_alarm" "redis_memory" {
   }
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "redis_evictions" {
@@ -646,11 +396,6 @@ resource "aws_cloudwatch_metric_alarm" "redis_evictions" {
   }
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 # ============================================================
@@ -675,11 +420,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_api_gateway"        {
     ServiceName = "api-gateway"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_cpu_user_service"        {
   alarm_name = "prod-user-service-ecs-cpu-high"
@@ -695,11 +435,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_user_service"        {
     ServiceName = "user-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_cpu_order_service"       {
   alarm_name = "prod-order-service-ecs-cpu-high"
@@ -715,11 +450,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_order_service"       {
     ServiceName = "order-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_cpu_payment_service"     {
   alarm_name = "prod-payment-service-ecs-cpu-high"
@@ -735,11 +465,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_payment_service"     {
     ServiceName = "payment-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_cpu_inventory_service"   {
   alarm_name = "prod-inventory-service-ecs-cpu-high"
@@ -755,11 +480,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_inventory_service"   {
     ServiceName = "inventory-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_cpu_notification_service"{
   alarm_name = "prod-notification-service-ecs-cpu-high"
@@ -775,11 +495,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_notification_service"{
     ServiceName = "notification-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_cpu_catalog_service"     {
   alarm_name = "prod-catalog-service-ecs-cpu-high"
@@ -795,11 +510,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_catalog_service"     {
     ServiceName = "catalog-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_cpu_search_service"      {
   alarm_name = "prod-search-service-ecs-cpu-high"
@@ -815,11 +525,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_search_service"      {
     ServiceName = "search-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_memory_api_gateway"        {
@@ -836,11 +541,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_memory_api_gateway"        {
     ServiceName = "api-gateway"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_memory_user_service"        {
   alarm_name = "prod-user-service-ecs-memory-high"
@@ -856,11 +556,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_memory_user_service"        {
     ServiceName = "user-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_memory_order_service"       {
   alarm_name = "prod-order-service-ecs-memory-high"
@@ -876,11 +571,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_memory_order_service"       {
     ServiceName = "order-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_memory_payment_service"     {
   alarm_name = "prod-payment-service-ecs-memory-high"
@@ -896,11 +586,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_memory_payment_service"     {
     ServiceName = "payment-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_memory_inventory_service"   {
   alarm_name = "prod-inventory-service-ecs-memory-high"
@@ -916,11 +601,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_memory_inventory_service"   {
     ServiceName = "inventory-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_memory_notification_service"{
   alarm_name = "prod-notification-service-ecs-memory-high"
@@ -936,11 +616,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_memory_notification_service"{
     ServiceName = "notification-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_memory_catalog_service"     {
   alarm_name = "prod-catalog-service-ecs-memory-high"
@@ -956,11 +631,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_memory_catalog_service"     {
     ServiceName = "catalog-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "ecs_memory_search_service"      {
   alarm_name = "prod-search-service-ecs-memory-high"
@@ -976,11 +646,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_memory_search_service"      {
     ServiceName = "search-service"
   }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 # ============================================================
@@ -1004,11 +669,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_5xx" {
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
   ok_actions    = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "alb_latency" {
@@ -1027,11 +687,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_latency" {
   }
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "alb_healthy_hosts" {
@@ -1051,11 +706,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_healthy_hosts" {
   }
 
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 # ============================================================
@@ -1073,11 +723,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_process_order"      {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.process_order.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_send_email"         {
   alarm_name = "send-email-lambda-errors"
@@ -1090,11 +735,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_send_email"         {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.send_email.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_resize_image"       {
   alarm_name = "resize-image-lambda-errors"
@@ -1107,11 +747,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_resize_image"       {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.resize_image.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_validate_payment"   {
   alarm_name = "validate-payment-lambda-errors"
@@ -1124,11 +759,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_validate_payment"   {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.validate_payment.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_sync_inventory"     {
   alarm_name = "sync-inventory-lambda-errors"
@@ -1141,11 +771,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_sync_inventory"     {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.sync_inventory.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_generate_report"    {
   alarm_name = "generate-report-lambda-errors"
@@ -1158,11 +783,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_generate_report"    {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.generate_report.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_cleanup_sessions"   {
   alarm_name = "cleanup-sessions-lambda-errors"
@@ -1175,11 +795,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_cleanup_sessions"   {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.cleanup_sessions.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_data_transformer"   {
   alarm_name = "data-transformer-lambda-errors"
@@ -1192,11 +807,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_data_transformer"   {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.data_transformer.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_notification_sender"{
   alarm_name = "notification-sender-lambda-errors"
@@ -1209,11 +819,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_notification_sender"{
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.notification_sender.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_cache_warmer"       {
   alarm_name = "cache-warmer-lambda-errors"
@@ -1226,11 +831,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_cache_warmer"       {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.cache_warmer.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_batch_processor"    {
   alarm_name = "batch-processor-lambda-errors"
@@ -1243,11 +843,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_batch_processor"    {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.batch_processor.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_stream_consumer"    {
   alarm_name = "stream-consumer-lambda-errors"
@@ -1260,11 +855,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_stream_consumer"    {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.stream_consumer.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_api_authorizer"     {
   alarm_name = "api-authorizer-lambda-errors"
@@ -1277,11 +867,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_api_authorizer"     {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.api_authorizer.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_migrate_data"       {
   alarm_name = "migrate-data-lambda-errors"
@@ -1294,11 +879,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_migrate_data"       {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.migrate_data.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_errors_archive_records"    {
   alarm_name = "archive-records-lambda-errors"
@@ -1311,11 +891,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors_archive_records"    {
   threshold = 10
   dimensions = { FunctionName = aws_lambda_function.archive_records.function_name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_process_order"      {
@@ -1329,11 +904,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_process_order"      {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.process_order.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_send_email"         {
   alarm_name = "send-email-lambda-throttles"
@@ -1346,11 +916,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_send_email"         {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.send_email.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_resize_image"       {
   alarm_name = "resize-image-lambda-throttles"
@@ -1363,11 +928,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_resize_image"       {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.resize_image.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_validate_payment"   {
   alarm_name = "validate-payment-lambda-throttles"
@@ -1380,11 +940,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_validate_payment"   {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.validate_payment.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_sync_inventory"     {
   alarm_name = "sync-inventory-lambda-throttles"
@@ -1397,11 +952,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_sync_inventory"     {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.sync_inventory.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_generate_report"    {
   alarm_name = "generate-report-lambda-throttles"
@@ -1414,11 +964,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_generate_report"    {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.generate_report.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_cleanup_sessions"   {
   alarm_name = "cleanup-sessions-lambda-throttles"
@@ -1431,11 +976,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_cleanup_sessions"   {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.cleanup_sessions.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_data_transformer"   {
   alarm_name = "data-transformer-lambda-throttles"
@@ -1448,11 +988,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_data_transformer"   {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.data_transformer.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_notification_sender"{
   alarm_name = "notification-sender-lambda-throttles"
@@ -1465,11 +1000,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_notification_sender"{
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.notification_sender.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_cache_warmer"       {
   alarm_name = "cache-warmer-lambda-throttles"
@@ -1482,11 +1012,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_cache_warmer"       {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.cache_warmer.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_batch_processor"    {
   alarm_name = "batch-processor-lambda-throttles"
@@ -1499,11 +1024,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_batch_processor"    {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.batch_processor.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_stream_consumer"    {
   alarm_name = "stream-consumer-lambda-throttles"
@@ -1516,11 +1036,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_stream_consumer"    {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.stream_consumer.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_api_authorizer"     {
   alarm_name = "api-authorizer-lambda-throttles"
@@ -1533,11 +1048,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_api_authorizer"     {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.api_authorizer.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_migrate_data"       {
   alarm_name = "migrate-data-lambda-throttles"
@@ -1550,11 +1060,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_migrate_data"       {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.migrate_data.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles_archive_records"    {
   alarm_name = "archive-records-lambda-throttles"
@@ -1567,11 +1072,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_throttles_archive_records"    {
   threshold = 100
   dimensions = { FunctionName = aws_lambda_function.archive_records.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_process_order"      {
@@ -1585,11 +1085,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_process_order"      {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.process_order.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_send_email"         {
   alarm_name = "send-email-lambda-duration"
@@ -1602,11 +1097,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_send_email"         {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.send_email.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_resize_image"       {
   alarm_name = "resize-image-lambda-duration"
@@ -1619,11 +1109,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_resize_image"       {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.resize_image.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_validate_payment"   {
   alarm_name = "validate-payment-lambda-duration"
@@ -1636,11 +1121,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_validate_payment"   {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.validate_payment.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_sync_inventory"     {
   alarm_name = "sync-inventory-lambda-duration"
@@ -1653,11 +1133,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_sync_inventory"     {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.sync_inventory.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_generate_report"    {
   alarm_name = "generate-report-lambda-duration"
@@ -1670,11 +1145,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_generate_report"    {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.generate_report.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_cleanup_sessions"   {
   alarm_name = "cleanup-sessions-lambda-duration"
@@ -1687,11 +1157,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_cleanup_sessions"   {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.cleanup_sessions.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_data_transformer"   {
   alarm_name = "data-transformer-lambda-duration"
@@ -1704,11 +1169,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_data_transformer"   {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.data_transformer.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_notification_sender"{
   alarm_name = "notification-sender-lambda-duration"
@@ -1721,11 +1181,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_notification_sender"{
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.notification_sender.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_cache_warmer"       {
   alarm_name = "cache-warmer-lambda-duration"
@@ -1738,11 +1193,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_cache_warmer"       {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.cache_warmer.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_batch_processor"    {
   alarm_name = "batch-processor-lambda-duration"
@@ -1755,11 +1205,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_batch_processor"    {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.batch_processor.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_stream_consumer"    {
   alarm_name = "stream-consumer-lambda-duration"
@@ -1772,11 +1217,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_stream_consumer"    {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.stream_consumer.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_api_authorizer"     {
   alarm_name = "api-authorizer-lambda-duration"
@@ -1789,11 +1229,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_api_authorizer"     {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.api_authorizer.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_migrate_data"       {
   alarm_name = "migrate-data-lambda-duration"
@@ -1806,11 +1241,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_migrate_data"       {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.migrate_data.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "lambda_duration_archive_records"    {
   alarm_name = "archive-records-lambda-duration"
@@ -1823,11 +1253,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration_archive_records"    {
   threshold = 25000
   dimensions = { FunctionName = aws_lambda_function.archive_records.function_name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 # ============================================================
@@ -1845,11 +1270,6 @@ resource "aws_cloudwatch_metric_alarm" "sqs_depth_orders"        {
   threshold = 10000
   dimensions = { QueueName = aws_sqs_queue.orders.name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "sqs_depth_payments"      {
   alarm_name = "payments-queue-depth-high"
@@ -1862,11 +1282,6 @@ resource "aws_cloudwatch_metric_alarm" "sqs_depth_payments"      {
   threshold = 10000
   dimensions = { QueueName = aws_sqs_queue.payments.name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "sqs_depth_notifications" {
   alarm_name = "notifications-queue-depth-high"
@@ -1879,11 +1294,6 @@ resource "aws_cloudwatch_metric_alarm" "sqs_depth_notifications" {
   threshold = 10000
   dimensions = { QueueName = aws_sqs_queue.notifications.name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "sqs_depth_emails"        {
   alarm_name = "emails-queue-depth-high"
@@ -1896,11 +1306,6 @@ resource "aws_cloudwatch_metric_alarm" "sqs_depth_emails"        {
   threshold = 10000
   dimensions = { QueueName = aws_sqs_queue.emails.name }
   alarm_actions = [aws_sns_topic.main["alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "sqs_dlq_depth_orders"        {
@@ -1914,11 +1319,6 @@ resource "aws_cloudwatch_metric_alarm" "sqs_dlq_depth_orders"        {
   threshold = 0
   dimensions = { QueueName = aws_sqs_queue.orders_dlq.name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "sqs_dlq_depth_payments"      {
   alarm_name = "payments-dlq-not-empty"
@@ -1931,11 +1331,6 @@ resource "aws_cloudwatch_metric_alarm" "sqs_dlq_depth_payments"      {
   threshold = 0
   dimensions = { QueueName = aws_sqs_queue.payments_dlq.name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 resource "aws_cloudwatch_metric_alarm" "sqs_dlq_depth_notifications" {
   alarm_name = "notifications-dlq-not-empty"
@@ -1948,11 +1343,6 @@ resource "aws_cloudwatch_metric_alarm" "sqs_dlq_depth_notifications" {
   threshold = 0
   dimensions = { QueueName = aws_sqs_queue.notifications_dlq.name }
   alarm_actions = [aws_sns_topic.main["error-alerts"].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 # ============================================================
@@ -1979,11 +1369,6 @@ resource "aws_cloudwatch_metric_alarm" "asg_cpu" {
     aws_sns_topic.main["alerts"].arn
   ]
   ok_actions = [aws_autoscaling_policy.worker_scale_down[each.key].arn]
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 # ============================================================
@@ -2162,11 +1547,6 @@ resource "aws_budgets_budget" "monthly_total" {
     notification_type          = "FORECASTED"
     subscriber_email_addresses = ["finance@example.com", "engineering-leads@example.com"]
   }
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_budgets_budget" "ec2_monthly" {
@@ -2188,11 +1568,6 @@ resource "aws_budgets_budget" "ec2_monthly" {
     notification_type          = "ACTUAL"
     subscriber_email_addresses = ["finance@example.com"]
   }
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_budgets_budget" "rds_monthly" {
@@ -2213,10 +1588,5 @@ resource "aws_budgets_budget" "rds_monthly" {
     threshold_type             = "PERCENTAGE"
     notification_type          = "ACTUAL"
     subscriber_email_addresses = ["finance@example.com"]
-  }
-  tags = {
-    Service     = "monitoring"
-    Owner       = "sre"
-    Environment = "Prod"
   }
 }

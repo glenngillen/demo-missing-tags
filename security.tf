@@ -6,11 +6,6 @@ resource "aws_kms_key" "rds" {
   description             = "KMS key for RDS encryption"
   deletion_window_in_days = 30
   enable_key_rotation     = true
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_kms_alias" "rds" {
@@ -22,11 +17,6 @@ resource "aws_kms_key" "s3" {
   description             = "KMS key for S3 encryption"
   deletion_window_in_days = 30
   enable_key_rotation     = true
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_kms_alias" "s3" {
@@ -38,11 +28,6 @@ resource "aws_kms_key" "ssm" {
   description             = "KMS key for SSM Parameter Store"
   deletion_window_in_days = 30
   enable_key_rotation     = true
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_kms_alias" "ssm" {
@@ -54,11 +39,6 @@ resource "aws_kms_key" "secrets" {
   description             = "KMS key for Secrets Manager"
   deletion_window_in_days = 30
   enable_key_rotation     = true
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_kms_alias" "secrets" {
@@ -70,11 +50,6 @@ resource "aws_kms_key" "cloudwatch" {
   description             = "KMS key for CloudWatch Logs"
   deletion_window_in_days = 30
   enable_key_rotation     = true
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_kms_alias" "cloudwatch" {
@@ -86,11 +61,6 @@ resource "aws_kms_key" "elasticache" {
   description             = "KMS key for ElastiCache"
   deletion_window_in_days = 30
   enable_key_rotation     = true
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_kms_alias" "elasticache" {
@@ -102,11 +72,6 @@ resource "aws_kms_key" "sqs" {
   description             = "KMS key for SQS queues"
   deletion_window_in_days = 30
   enable_key_rotation     = true
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_kms_alias" "sqs" {
@@ -118,11 +83,6 @@ resource "aws_kms_key" "sns" {
   description             = "KMS key for SNS topics"
   deletion_window_in_days = 30
   enable_key_rotation     = true
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_kms_alias" "sns" {
@@ -134,11 +94,6 @@ resource "aws_kms_key" "kinesis" {
   description             = "KMS key for Kinesis streams"
   deletion_window_in_days = 30
   enable_key_rotation     = true
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_kms_alias" "kinesis" {
@@ -269,11 +224,6 @@ resource "aws_iam_role" "ecs_execution" {
   for_each           = toset(var.environments)
   name               = "${each.key}-ecs-execution-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_execution" {
@@ -303,11 +253,6 @@ resource "aws_iam_policy" "ecs_execution_ssm" {
       }
     ]
   })
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_execution_ssm" {
@@ -373,20 +318,10 @@ locals {
 resource "aws_iam_role" "ecs_task_api_gateway" {
   name               = "ecs-task-api-gateway"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "ecs_task_base_api_gateway" {
   name   = "ecs-task-api-gateway-base"
   policy = local.ecs_task_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "ecs_task_base_api_gateway" {
   role       = aws_iam_role.ecs_task_api_gateway.name
@@ -396,20 +331,10 @@ resource "aws_iam_role_policy_attachment" "ecs_task_base_api_gateway" {
 resource "aws_iam_role" "ecs_task_user_service" {
   name               = "ecs-task-user-service"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "ecs_task_base_user_service" {
   name   = "ecs-task-user-service-base"
   policy = local.ecs_task_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "ecs_task_base_user_service" {
   role       = aws_iam_role.ecs_task_user_service.name
@@ -419,20 +344,10 @@ resource "aws_iam_role_policy_attachment" "ecs_task_base_user_service" {
 resource "aws_iam_role" "ecs_task_order_service" {
   name               = "ecs-task-order-service"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "ecs_task_base_order_service" {
   name   = "ecs-task-order-service-base"
   policy = local.ecs_task_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "ecs_task_base_order_service" {
   role       = aws_iam_role.ecs_task_order_service.name
@@ -442,20 +357,10 @@ resource "aws_iam_role_policy_attachment" "ecs_task_base_order_service" {
 resource "aws_iam_role" "ecs_task_payment_service" {
   name               = "ecs-task-payment-service"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "ecs_task_base_payment_service" {
   name   = "ecs-task-payment-service-base"
   policy = local.ecs_task_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "ecs_task_base_payment_service" {
   role       = aws_iam_role.ecs_task_payment_service.name
@@ -465,20 +370,10 @@ resource "aws_iam_role_policy_attachment" "ecs_task_base_payment_service" {
 resource "aws_iam_role" "ecs_task_inventory_service" {
   name               = "ecs-task-inventory-service"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "ecs_task_base_inventory_service" {
   name   = "ecs-task-inventory-service-base"
   policy = local.ecs_task_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "ecs_task_base_inventory_service" {
   role       = aws_iam_role.ecs_task_inventory_service.name
@@ -488,20 +383,10 @@ resource "aws_iam_role_policy_attachment" "ecs_task_base_inventory_service" {
 resource "aws_iam_role" "ecs_task_notification_service" {
   name               = "ecs-task-notification-service"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "ecs_task_base_notification_service" {
   name   = "ecs-task-notification-service-base"
   policy = local.ecs_task_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "ecs_task_base_notification_service" {
   role       = aws_iam_role.ecs_task_notification_service.name
@@ -511,20 +396,10 @@ resource "aws_iam_role_policy_attachment" "ecs_task_base_notification_service" {
 resource "aws_iam_role" "ecs_task_catalog_service" {
   name               = "ecs-task-catalog-service"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "ecs_task_base_catalog_service" {
   name   = "ecs-task-catalog-service-base"
   policy = local.ecs_task_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "ecs_task_base_catalog_service" {
   role       = aws_iam_role.ecs_task_catalog_service.name
@@ -534,20 +409,10 @@ resource "aws_iam_role_policy_attachment" "ecs_task_base_catalog_service" {
 resource "aws_iam_role" "ecs_task_search_service" {
   name               = "ecs-task-search-service"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "ecs_task_base_search_service" {
   name   = "ecs-task-search-service-base"
   policy = local.ecs_task_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "ecs_task_base_search_service" {
   role       = aws_iam_role.ecs_task_search_service.name
@@ -587,11 +452,6 @@ locals {
 resource "aws_iam_role" "lambda_process_order" {
   name               = "lambda-process-order"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_process_order" {
   role       = aws_iam_role.lambda_process_order.name
@@ -600,11 +460,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_process_order" {
 resource "aws_iam_policy" "lambda_base_process_order" {
   name   = "lambda-process-order-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_process_order" {
   role       = aws_iam_role.lambda_process_order.name
@@ -614,11 +469,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_process_order" {
 resource "aws_iam_role" "lambda_send_email" {
   name               = "lambda-send-email"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_send_email" {
   role       = aws_iam_role.lambda_send_email.name
@@ -627,11 +477,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_send_email" {
 resource "aws_iam_policy" "lambda_base_send_email" {
   name   = "lambda-send-email-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_send_email" {
   role       = aws_iam_role.lambda_send_email.name
@@ -641,11 +486,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_send_email" {
 resource "aws_iam_role" "lambda_resize_image" {
   name               = "lambda-resize-image"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_resize_image" {
   role       = aws_iam_role.lambda_resize_image.name
@@ -654,11 +494,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_resize_image" {
 resource "aws_iam_policy" "lambda_base_resize_image" {
   name   = "lambda-resize-image-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_resize_image" {
   role       = aws_iam_role.lambda_resize_image.name
@@ -668,11 +503,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_resize_image" {
 resource "aws_iam_role" "lambda_validate_payment" {
   name               = "lambda-validate-payment"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_validate_payment" {
   role       = aws_iam_role.lambda_validate_payment.name
@@ -681,11 +511,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_validate_payment" {
 resource "aws_iam_policy" "lambda_base_validate_payment" {
   name   = "lambda-validate-payment-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_validate_payment" {
   role       = aws_iam_role.lambda_validate_payment.name
@@ -695,11 +520,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_validate_payment" {
 resource "aws_iam_role" "lambda_sync_inventory" {
   name               = "lambda-sync-inventory"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_sync_inventory" {
   role       = aws_iam_role.lambda_sync_inventory.name
@@ -708,11 +528,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_sync_inventory" {
 resource "aws_iam_policy" "lambda_base_sync_inventory" {
   name   = "lambda-sync-inventory-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_sync_inventory" {
   role       = aws_iam_role.lambda_sync_inventory.name
@@ -722,11 +537,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_sync_inventory" {
 resource "aws_iam_role" "lambda_generate_report" {
   name               = "lambda-generate-report"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_generate_report" {
   role       = aws_iam_role.lambda_generate_report.name
@@ -735,11 +545,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_generate_report" {
 resource "aws_iam_policy" "lambda_base_generate_report" {
   name   = "lambda-generate-report-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_generate_report" {
   role       = aws_iam_role.lambda_generate_report.name
@@ -749,11 +554,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_generate_report" {
 resource "aws_iam_role" "lambda_cleanup_sessions" {
   name               = "lambda-cleanup-sessions"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_cleanup_sessions" {
   role       = aws_iam_role.lambda_cleanup_sessions.name
@@ -762,11 +562,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_cleanup_sessions" {
 resource "aws_iam_policy" "lambda_base_cleanup_sessions" {
   name   = "lambda-cleanup-sessions-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_cleanup_sessions" {
   role       = aws_iam_role.lambda_cleanup_sessions.name
@@ -776,11 +571,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_cleanup_sessions" {
 resource "aws_iam_role" "lambda_data_transformer" {
   name               = "lambda-data-transformer"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_data_transformer" {
   role       = aws_iam_role.lambda_data_transformer.name
@@ -789,11 +579,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_data_transformer" {
 resource "aws_iam_policy" "lambda_base_data_transformer" {
   name   = "lambda-data-transformer-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_data_transformer" {
   role       = aws_iam_role.lambda_data_transformer.name
@@ -803,11 +588,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_data_transformer" {
 resource "aws_iam_role" "lambda_notification_sender" {
   name               = "lambda-notification-sender"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_notification_sender" {
   role       = aws_iam_role.lambda_notification_sender.name
@@ -816,11 +596,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_notification_sender" {
 resource "aws_iam_policy" "lambda_base_notification_sender" {
   name   = "lambda-notification-sender-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_notification_sender" {
   role       = aws_iam_role.lambda_notification_sender.name
@@ -830,11 +605,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_notification_sender" {
 resource "aws_iam_role" "lambda_cache_warmer" {
   name               = "lambda-cache-warmer"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_cache_warmer" {
   role       = aws_iam_role.lambda_cache_warmer.name
@@ -843,11 +613,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_cache_warmer" {
 resource "aws_iam_policy" "lambda_base_cache_warmer" {
   name   = "lambda-cache-warmer-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_cache_warmer" {
   role       = aws_iam_role.lambda_cache_warmer.name
@@ -857,11 +622,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_cache_warmer" {
 resource "aws_iam_role" "lambda_batch_processor" {
   name               = "lambda-batch-processor"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_batch_processor" {
   role       = aws_iam_role.lambda_batch_processor.name
@@ -870,11 +630,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_batch_processor" {
 resource "aws_iam_policy" "lambda_base_batch_processor" {
   name   = "lambda-batch-processor-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_batch_processor" {
   role       = aws_iam_role.lambda_batch_processor.name
@@ -884,11 +639,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_batch_processor" {
 resource "aws_iam_role" "lambda_stream_consumer" {
   name               = "lambda-stream-consumer"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_stream_consumer" {
   role       = aws_iam_role.lambda_stream_consumer.name
@@ -897,11 +647,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_stream_consumer" {
 resource "aws_iam_policy" "lambda_base_stream_consumer" {
   name   = "lambda-stream-consumer-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_stream_consumer" {
   role       = aws_iam_role.lambda_stream_consumer.name
@@ -911,11 +656,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_stream_consumer" {
 resource "aws_iam_role" "lambda_api_authorizer" {
   name               = "lambda-api-authorizer"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_api_authorizer" {
   role       = aws_iam_role.lambda_api_authorizer.name
@@ -924,11 +664,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_api_authorizer" {
 resource "aws_iam_policy" "lambda_base_api_authorizer" {
   name   = "lambda-api-authorizer-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_api_authorizer" {
   role       = aws_iam_role.lambda_api_authorizer.name
@@ -938,11 +673,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_api_authorizer" {
 resource "aws_iam_role" "lambda_migrate_data" {
   name               = "lambda-migrate-data"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_migrate_data" {
   role       = aws_iam_role.lambda_migrate_data.name
@@ -951,11 +681,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_migrate_data" {
 resource "aws_iam_policy" "lambda_base_migrate_data" {
   name   = "lambda-migrate-data-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_migrate_data" {
   role       = aws_iam_role.lambda_migrate_data.name
@@ -965,11 +690,6 @@ resource "aws_iam_role_policy_attachment" "lambda_base_migrate_data" {
 resource "aws_iam_role" "lambda_archive_records" {
   name               = "lambda-archive-records"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_basic_archive_records" {
   role       = aws_iam_role.lambda_archive_records.name
@@ -978,11 +698,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_archive_records" {
 resource "aws_iam_policy" "lambda_base_archive_records" {
   name   = "lambda-archive-records-base"
   policy = local.lambda_base_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "lambda_base_archive_records" {
   role       = aws_iam_role.lambda_archive_records.name
@@ -993,21 +708,11 @@ resource "aws_iam_role_policy_attachment" "lambda_base_archive_records" {
 resource "aws_iam_role" "ec2_instance" {
   name               = "ec2-instance-role"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_instance_profile" "ec2" {
   name = "ec2-instance-profile"
   role = aws_iam_role.ec2_instance.name
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "ec2_ssm" {
@@ -1024,11 +729,6 @@ resource "aws_iam_role_policy_attachment" "ec2_cloudwatch" {
 resource "aws_iam_role" "flow_logs" {
   name               = "vpc-flow-logs-role"
   assume_role_policy = data.aws_iam_policy_document.flow_logs_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_policy" "flow_logs" {
@@ -1050,11 +750,6 @@ resource "aws_iam_policy" "flow_logs" {
       }
     ]
   })
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "flow_logs" {
@@ -1094,20 +789,10 @@ locals {
 resource "aws_iam_role" "codebuild_api_gateway" {
   name               = "codebuild-api-gateway"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "codebuild_api_gateway" {
   name   = "codebuild-api-gateway-policy"
   policy = local.codebuild_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "codebuild_api_gateway" {
   role       = aws_iam_role.codebuild_api_gateway.name
@@ -1117,20 +802,10 @@ resource "aws_iam_role_policy_attachment" "codebuild_api_gateway" {
 resource "aws_iam_role" "codebuild_user_service" {
   name               = "codebuild-user-service"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "codebuild_user_service" {
   name   = "codebuild-user-service-policy"
   policy = local.codebuild_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "codebuild_user_service" {
   role       = aws_iam_role.codebuild_user_service.name
@@ -1140,20 +815,10 @@ resource "aws_iam_role_policy_attachment" "codebuild_user_service" {
 resource "aws_iam_role" "codebuild_order_service" {
   name               = "codebuild-order-service"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "codebuild_order_service" {
   name   = "codebuild-order-service-policy"
   policy = local.codebuild_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "codebuild_order_service" {
   role       = aws_iam_role.codebuild_order_service.name
@@ -1163,20 +828,10 @@ resource "aws_iam_role_policy_attachment" "codebuild_order_service" {
 resource "aws_iam_role" "codebuild_payment_service" {
   name               = "codebuild-payment-service"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "codebuild_payment_service" {
   name   = "codebuild-payment-service-policy"
   policy = local.codebuild_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "codebuild_payment_service" {
   role       = aws_iam_role.codebuild_payment_service.name
@@ -1186,20 +841,10 @@ resource "aws_iam_role_policy_attachment" "codebuild_payment_service" {
 resource "aws_iam_role" "codebuild_inventory_service" {
   name               = "codebuild-inventory-service"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "codebuild_inventory_service" {
   name   = "codebuild-inventory-service-policy"
   policy = local.codebuild_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "codebuild_inventory_service" {
   role       = aws_iam_role.codebuild_inventory_service.name
@@ -1209,20 +854,10 @@ resource "aws_iam_role_policy_attachment" "codebuild_inventory_service" {
 resource "aws_iam_role" "codebuild_notification_service" {
   name               = "codebuild-notification-service"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "codebuild_notification_service" {
   name   = "codebuild-notification-service-policy"
   policy = local.codebuild_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "codebuild_notification_service" {
   role       = aws_iam_role.codebuild_notification_service.name
@@ -1232,20 +867,10 @@ resource "aws_iam_role_policy_attachment" "codebuild_notification_service" {
 resource "aws_iam_role" "codebuild_catalog_service" {
   name               = "codebuild-catalog-service"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "codebuild_catalog_service" {
   name   = "codebuild-catalog-service-policy"
   policy = local.codebuild_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "codebuild_catalog_service" {
   role       = aws_iam_role.codebuild_catalog_service.name
@@ -1255,20 +880,10 @@ resource "aws_iam_role_policy_attachment" "codebuild_catalog_service" {
 resource "aws_iam_role" "codebuild_search_service" {
   name               = "codebuild-search-service"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_policy" "codebuild_search_service" {
   name   = "codebuild-search-service-policy"
   policy = local.codebuild_policy
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 resource "aws_iam_role_policy_attachment" "codebuild_search_service" {
   role       = aws_iam_role.codebuild_search_service.name
@@ -1279,11 +894,6 @@ resource "aws_iam_role_policy_attachment" "codebuild_search_service" {
 resource "aws_iam_role" "codepipeline" {
   name               = "codepipeline-role"
   assume_role_policy = data.aws_iam_policy_document.codepipeline_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_policy" "codepipeline" {
@@ -1313,11 +923,6 @@ resource "aws_iam_policy" "codepipeline" {
       }
     ]
   })
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "codepipeline" {
@@ -1330,11 +935,6 @@ resource "aws_iam_role" "eks_cluster" {
   for_each           = toset(["prod", "staging"])
   name               = "${each.key}-eks-cluster-role"
   assume_role_policy = data.aws_iam_policy_document.eks_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : "Stage"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "eks_cluster" {
@@ -1348,11 +948,6 @@ resource "aws_iam_role" "eks_node" {
   for_each           = toset(["prod", "staging"])
   name               = "${each.key}-eks-node-role"
   assume_role_policy = data.aws_iam_policy_document.eks_node_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : "Stage"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "eks_node_worker" {
@@ -1377,11 +972,6 @@ resource "aws_iam_role_policy_attachment" "eks_node_cni" {
 resource "aws_iam_role" "firehose" {
   name               = "firehose-delivery-role"
   assume_role_policy = data.aws_iam_policy_document.firehose_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_policy" "firehose" {
@@ -1408,11 +998,6 @@ resource "aws_iam_policy" "firehose" {
       }
     ]
   })
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "firehose" {
@@ -1424,11 +1009,6 @@ resource "aws_iam_role_policy_attachment" "firehose" {
 resource "aws_iam_role" "step_functions" {
   name               = "step-functions-role"
   assume_role_policy = data.aws_iam_policy_document.step_functions_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_policy" "step_functions" {
@@ -1454,11 +1034,6 @@ resource "aws_iam_policy" "step_functions" {
       }
     ]
   })
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "step_functions" {
@@ -1470,11 +1045,6 @@ resource "aws_iam_role_policy_attachment" "step_functions" {
 resource "aws_iam_role" "eventbridge" {
   name               = "eventbridge-role"
   assume_role_policy = data.aws_iam_policy_document.eventbridge_assume_role.json
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_policy" "eventbridge" {
@@ -1495,11 +1065,6 @@ resource "aws_iam_policy" "eventbridge" {
       }
     ]
   })
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "eventbridge" {
@@ -1515,11 +1080,6 @@ resource "aws_iam_user" "service_accounts" {
     "audit-exporter", "s3-replication-agent"
   ])
   name = each.key
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_access_key" "service_accounts" {

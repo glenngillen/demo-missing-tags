@@ -488,21 +488,7 @@ resource "aws_s3_bucket_logging" "audit_logs" {
 
 resource "aws_s3_bucket" "access_logs" {
   bucket = "mycompany-access-logs-${random_id.suffix.hex}"
-  tags = {
-    source      = "s3"
-    name        = "access-logs"
-    version     = "1.0"
-    ticket      = "INFRA-001"
-    budget_code = "ENG"
-    application = "loki"
-    environment = "prod"
-    team        = "systems"
-    initiative  = "modernized-tech-ecosystem"
-    data_class  = "internal"
-    Service     = "logging"
-    Owner       = "sre"
-    Environment = "Prod"
-  }
+  tags   = { Service = "logging", Owner = "sre", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "access_logs" {
@@ -929,11 +915,6 @@ resource "aws_s3_bucket" "infra" {
     "config-snapshots"
   ])
   bucket = "mycompany-infra-${each.key}-${random_id.suffix.hex}"
-  tags = {
-    Service     = "data"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_s3_bucket_versioning" "infra" {
@@ -1020,11 +1001,6 @@ resource "aws_s3_bucket" "dr_replica" {
   for_each = toset(["terraform-state-backend", "backups", "audit-logs"])
   provider  = aws.secondary
   bucket    = "mycompany-dr-${each.key}-${random_id.suffix.hex}"
-  tags = {
-    Service     = "data"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_s3_bucket_versioning" "dr_replica" {
@@ -1052,11 +1028,6 @@ resource "aws_iam_role" "s3_replication" {
       }
     ]
   })
-  tags = {
-    Service     = "data"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_policy" "s3_replication" {
@@ -1093,11 +1064,6 @@ resource "aws_iam_policy" "s3_replication" {
       }
     ]
   })
-  tags = {
-    Service     = "data"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "s3_replication" {
@@ -1153,11 +1119,6 @@ resource "aws_cloudtrail" "main" {
       values = ["arn:aws:lambda"]
     }
   }
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_cloudtrail" "data_events" {
@@ -1173,10 +1134,5 @@ resource "aws_cloudtrail" "data_events" {
       type   = "AWS::DynamoDB::Table"
       values = ["arn:aws:dynamodb"]
     }
-  }
-  tags = {
-    Service     = "security"
-    Owner       = "secops"
-    Environment = "Prod"
   }
 }

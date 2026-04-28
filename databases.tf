@@ -28,11 +28,6 @@ resource "aws_security_group" "rds" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = {
-    Service     = "database"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_security_group" "redis" {
@@ -53,11 +48,6 @@ resource "aws_security_group" "redis" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags = {
-    Service     = "cache"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -87,11 +77,6 @@ resource "aws_security_group" "msk" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = {
-    Service     = "messaging"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_security_group" "opensearch" {
@@ -119,11 +104,6 @@ resource "aws_security_group" "opensearch" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags = {
-    Service     = "search"
-    Owner       = "appdev"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -170,11 +150,6 @@ resource "aws_db_parameter_group" "postgres14" {
     name  = "autovacuum_vacuum_scale_factor"
     value = "0.1"
   }
-  tags = {
-    Service     = "database"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 resource "aws_db_parameter_group" "mysql8" {
@@ -195,11 +170,6 @@ resource "aws_db_parameter_group" "mysql8" {
   parameter {
     name  = "long_query_time"
     value = "1"
-  }
-  tags = {
-    Service     = "database"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -246,11 +216,6 @@ resource "aws_db_instance" "main" {
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
 
   copy_tags_to_snapshot = false
-  tags = {
-    Service     = "database"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 # ============================================================
@@ -276,11 +241,6 @@ resource "aws_db_instance" "read_replica" {
 
   auto_minor_version_upgrade = true
   skip_final_snapshot        = true
-  tags = {
-    Service     = "database"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 # ============================================================
@@ -315,11 +275,6 @@ resource "aws_db_instance" "mysql_analytics" {
 
   monitoring_interval = 60
   monitoring_role_arn = aws_iam_role.rds_monitoring.arn
-  tags = {
-    Service     = "database"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : "Stage"
-  }
 }
 
 # RDS Monitoring Role
@@ -338,11 +293,6 @@ resource "aws_iam_role" "rds_monitoring" {
       }
     ]
   })
-  tags = {
-    Service     = "platform"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "rds_monitoring" {
@@ -372,11 +322,6 @@ resource "aws_elasticache_parameter_group" "redis7" {
   parameter {
     name  = "hz"
     value = "15"
-  }
-  tags = {
-    Service     = "cache"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
   }
 }
 
@@ -421,11 +366,6 @@ resource "aws_elasticache_replication_group" "main" {
     log_format       = "text"
     log_type         = "engine-log"
   }
-  tags = {
-    Service     = "cache"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : each.key == "staging" ? "Stage" : "Dev"
-  }
 }
 
 # Dedicated session cache
@@ -452,11 +392,6 @@ resource "aws_elasticache_replication_group" "sessions" {
   multi_az_enabled           = true
 
   snapshot_retention_limit = 3
-  tags = {
-    Service     = "cache"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 # ============================================================
@@ -483,11 +418,6 @@ resource "aws_dynamodb_table" "users" {
     enabled        = true
   }
 
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "sessions" {
@@ -510,11 +440,6 @@ resource "aws_dynamodb_table" "sessions" {
     enabled        = true
   }
 
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "orders" {
@@ -538,11 +463,6 @@ resource "aws_dynamodb_table" "orders" {
   }
 
 
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "order_items" {
@@ -565,11 +485,6 @@ resource "aws_dynamodb_table" "order_items" {
     enabled        = true
   }
 
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "products" {
@@ -592,11 +507,6 @@ resource "aws_dynamodb_table" "products" {
     enabled        = true
   }
 
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "inventory" {
@@ -619,11 +529,6 @@ resource "aws_dynamodb_table" "inventory" {
     enabled        = true
   }
 
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "carts" {
@@ -646,11 +551,6 @@ resource "aws_dynamodb_table" "carts" {
     enabled        = true
   }
 
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "feature_flags" {
@@ -673,11 +573,6 @@ resource "aws_dynamodb_table" "feature_flags" {
     enabled        = true
   }
 
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "config" {
@@ -700,11 +595,6 @@ resource "aws_dynamodb_table" "config" {
     enabled        = true
   }
 
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "rate_limits" {
@@ -727,11 +617,6 @@ resource "aws_dynamodb_table" "rate_limits" {
     enabled        = true
   }
 
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "orders_with_gsi" {
@@ -783,11 +668,6 @@ resource "aws_dynamodb_table" "orders_with_gsi" {
     enabled     = true
     kms_key_arn = aws_kms_key.rds.arn
   }
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_dynamodb_table" "time_series_metrics" {
@@ -818,11 +698,6 @@ resource "aws_dynamodb_table" "time_series_metrics" {
     enabled     = true
     kms_key_arn = aws_kms_key.rds.arn
   }
-  tags = {
-    Service     = "database"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_appautoscaling_target" "dynamodb_read" {
@@ -831,11 +706,6 @@ resource "aws_appautoscaling_target" "dynamodb_read" {
   resource_id        = "table/${aws_dynamodb_table.time_series_metrics.name}"
   scalable_dimension = "dynamodb:table:ReadCapacityUnits"
   service_namespace  = "dynamodb"
-  tags = {
-    Service     = "database"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_appautoscaling_target" "dynamodb_write" {
@@ -844,11 +714,6 @@ resource "aws_appautoscaling_target" "dynamodb_write" {
   resource_id        = "table/${aws_dynamodb_table.time_series_metrics.name}"
   scalable_dimension = "dynamodb:table:WriteCapacityUnits"
   service_namespace  = "dynamodb"
-  tags = {
-    Service     = "database"
-    Owner       = "platform"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_appautoscaling_policy" "dynamodb_read" {
@@ -962,11 +827,6 @@ resource "aws_opensearch_domain" "main" {
     cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch[each.key].arn
     log_type                 = "ES_APPLICATION_LOGS"
   }
-  tags = {
-    Service     = "search"
-    Owner       = "appdev"
-    Environment = each.key == "prod" ? "Prod" : "Stage"
-  }
 }
 
 # ============================================================
@@ -1021,11 +881,6 @@ resource "aws_redshift_cluster" "main" {
   enhanced_vpc_routing = true
   publicly_accessible  = false
 
-  tags = {
-    Service     = "analytics"
-    Owner       = "appdev"
-    Environment = "Prod"
-  }
 }
 
 resource "aws_redshift_logging" "main" {
@@ -1102,11 +957,6 @@ resource "aws_msk_cluster" "main" {
         prefix  = "${each.key}/msk/"
       }
     }
-  }
-  tags = {
-    Service     = "messaging"
-    Owner       = "platform"
-    Environment = each.key == "prod" ? "Prod" : "Stage"
   }
 }
 
