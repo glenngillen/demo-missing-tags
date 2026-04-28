@@ -252,7 +252,7 @@ resource "aws_db_instance" "mysql_analytics" {
 
   identifier        = "${each.key}-mysql-analytics"
   engine            = "mysql"
-  engine_version    = "8.0.35"
+  engine_version    = "8.4.0"
   instance_class    = each.key == "prod" ? "db.r5.xlarge" : "db.m5.large"
   allocated_storage = each.key == "prod" ? 1000 : 100
   storage_type      = "gp3"
