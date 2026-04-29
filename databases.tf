@@ -7,6 +7,11 @@ resource "aws_security_group" "rds" {
   name        = "${each.key}-rds"
   description = "RDS security group for ${each.key}"
   vpc_id      = aws_vpc.main[each.key].id
+  tags = {
+      Service     = "web"
+      Owner       = "appdev"
+      Environment = "Prod"
+  }
 
   ingress {
     from_port       = 5432
