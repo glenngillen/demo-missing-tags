@@ -227,49 +227,6 @@ resource "aws_elasticache_parameter_group" "redis7" {
   }
 }
 
-resource "aws_elasticache_replication_group" "main" {
-  for_each = toset(var.environments)
-
-  replication_group_id = "${each.key}-redis"
-  description          = "Redis cluster for ${each.key}"
-
-  engine               = "redis"
-  engine_version       = "7.0"
-  node_type            = each.key == "prod" ? "cache.r6g.xlarge" : "cache.t4g.small"
-  num_cache_clusters   = each.key == "prod" ? 3 : 1
-  parameter_group_name = aws_elasticache_parameter_group.redis7[each.key].name
-  port                 = 6379
-
-  subnet_group_name  = aws_elasticache_subnet_group.main[each.key].name
-  security_group_ids = [aws_security_group.redis[each.key].id]
-
-  at_rest_encryption_enabled = true
-  transit_encryption_enabled = true
-  auth_token                 = random_password.redis_auth.result
-  kms_key_id                 = aws_kms_key.elasticache.arn
-
-  automatic_failover_enabled = each.key == "prod"
-  multi_az_enabled           = each.key == "prod"
-
-  snapshot_retention_limit = each.key == "prod" ? 7 : 1
-  snapshot_window          = "02:00-03:00"
-  maintenance_window       = "sun:03:00-sun:04:00"
-
-  log_delivery_configuration {
-    destination      = aws_cloudwatch_log_group.redis[each.key].name
-    destination_type = "cloudwatch-logs"
-    log_format       = "text"
-    log_type         = "slow-log"
-  }
-
-  log_delivery_configuration {
-    destination      = aws_cloudwatch_log_group.redis[each.key].name
-    destination_type = "cloudwatch-logs"
-    log_format       = "text"
-    log_type         = "engine-log"
-  }
-}
-
 # Dedicated session cache
 resource "aws_elasticache_replication_group" "sessions" {
   replication_group_id = "prod-sessions"
