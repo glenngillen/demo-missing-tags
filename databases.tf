@@ -178,64 +178,6 @@ resource "aws_db_parameter_group" "mysql8" {
   }
 }
 
-# ============================================================
-# RDS — Read Replicas (prod only)
-# ============================================================
-
-resource "aws_db_instance" "read_replica" {
-  count = 3
-
-  identifier            = "prod-postgres-replica-${count.index + 1}"
-  replicate_source_db   = aws_db_instance.main["prod"].identifier
-  instance_class        = var.rds_instance_classes["prod"]
-  storage_encrypted     = true
-  kms_key_id            = aws_kms_key.rds.arn
-  vpc_security_group_ids = [aws_security_group.rds["prod"].id]
-  parameter_group_name  = aws_db_parameter_group.postgres14["prod"].name
-
-  performance_insights_enabled          = true
-  performance_insights_retention_period = 7
-
-  monitoring_interval = 60
-  monitoring_role_arn = aws_iam_role.rds_monitoring.arn
-
-  auto_minor_version_upgrade = true
-  skip_final_snapshot        = true
-}
-
-# ============================================================
-# RDS — MySQL (analytics)
-# ============================================================
-
-resource "aws_db_instance" "mysql_analytics" {
-  for_each = toset(["prod", "staging"])
-
-  identifier        = "${each.key}-mysql-analytics"
-  engine            = "mysql"
-  engine_version    = "8.4.0"
-  instance_class    = each.key == "prod" ? "db.r5.xlarge" : "db.m5.large"
-  allocated_storage = each.key == "prod" ? 1000 : 100
-  storage_type      = "gp3"
-  storage_encrypted = true
-  kms_key_id        = aws_kms_key.rds.arn
-
-  db_name  = "analyticsdb"
-  username = "analyticsadmin"
-  password = random_password.db_master.result
-
-  multi_az               = each.key == "prod"
-  db_subnet_group_name   = aws_db_subnet_group.main[each.key].name
-  vpc_security_group_ids = [aws_security_group.rds[each.key].id]
-  parameter_group_name   = aws_db_parameter_group.mysql8[each.key].name
-
-  backup_retention_period    = each.key == "prod" ? 14 : 3
-  deletion_protection        = each.key == "prod"
-  skip_final_snapshot        = each.key != "prod"
-  final_snapshot_identifier  = each.key == "prod" ? "${each.key}-mysql-analytics-final" : null
-
-  monitoring_interval = 60
-  monitoring_role_arn = aws_iam_role.rds_monitoring.arn
-}
 
 # RDS Monitoring Role
 resource "aws_iam_role" "rds_monitoring" {
