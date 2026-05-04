@@ -1,0 +1,8 @@
+version: "0.3"
+projects:
+  - path: data
+    name: data
+  - path: monitoring
+    name: monitoring
+  - path: .
+    name: base

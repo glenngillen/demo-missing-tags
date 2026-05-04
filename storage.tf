@@ -4,7 +4,6 @@
 
 resource "aws_s3_bucket" "raw_data" {
   bucket = "mycompany-raw-data-${random_id.suffix.hex}"
-  tags   = { Service = "data", Owner = "appdev", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "raw_data" {
@@ -65,7 +64,6 @@ resource "aws_s3_bucket_logging" "raw_data" {
 
 resource "aws_s3_bucket" "processed_data" {
   bucket = "mycompany-processed-data-${random_id.suffix.hex}"
-  tags   = { Service = "data", Owner = "appdev", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "processed_data" {
@@ -126,7 +124,6 @@ resource "aws_s3_bucket_logging" "processed_data" {
 
 resource "aws_s3_bucket" "backups" {
   bucket = "mycompany-backups-${random_id.suffix.hex}"
-  tags   = { Service = "backup", Owner = "sre", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "backups" {
@@ -187,7 +184,6 @@ resource "aws_s3_bucket_logging" "backups" {
 
 resource "aws_s3_bucket" "logs" {
   bucket = "mycompany-logs-${random_id.suffix.hex}"
-  tags   = { Service = "logging", Owner = "sre", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "logs" {
@@ -244,7 +240,6 @@ resource "aws_s3_bucket_logging" "logs" {
 
 resource "aws_s3_bucket" "user_uploads" {
   bucket = "mycompany-user-uploads-${random_id.suffix.hex}"
-  tags   = { Service = "media", Owner = "appdev", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "user_uploads" {
@@ -305,7 +300,6 @@ resource "aws_s3_bucket_logging" "user_uploads" {
 
 resource "aws_s3_bucket" "product_images" {
   bucket = "mycompany-product-images-${random_id.suffix.hex}"
-  tags   = { Service = "media", Owner = "appdev", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "product_images" {
@@ -366,7 +360,6 @@ resource "aws_s3_bucket_logging" "product_images" {
 
 resource "aws_s3_bucket" "documents" {
   bucket = "mycompany-documents-${random_id.suffix.hex}"
-  tags   = { Service = "documents", Owner = "appdev", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "documents" {
@@ -427,7 +420,6 @@ resource "aws_s3_bucket_logging" "documents" {
 
 resource "aws_s3_bucket" "audit_logs" {
   bucket = "mycompany-audit-logs-${random_id.suffix.hex}"
-  tags   = { Service = "audit", Owner = "secops", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "audit_logs" {
@@ -488,7 +480,6 @@ resource "aws_s3_bucket_logging" "audit_logs" {
 
 resource "aws_s3_bucket" "access_logs" {
   bucket = "mycompany-access-logs-${random_id.suffix.hex}"
-  tags   = { Service = "logging", Owner = "sre", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "access_logs" {
@@ -541,7 +532,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "access_logs" {
 
 resource "aws_s3_bucket" "cloudtrail_logs" {
   bucket = "mycompany-cloudtrail-logs-${random_id.suffix.hex}"
-  tags   = { Service = "audit", Owner = "secops", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "cloudtrail_logs" {
@@ -598,7 +588,6 @@ resource "aws_s3_bucket_logging" "cloudtrail_logs" {
 
 resource "aws_s3_bucket" "codepipeline_artifacts" {
   bucket = "mycompany-codepipeline-artifacts-${random_id.suffix.hex}"
-  tags   = { Service = "cicd", Owner = "platform", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "codepipeline_artifacts" {
@@ -659,7 +648,6 @@ resource "aws_s3_bucket_logging" "codepipeline_artifacts" {
 
 resource "aws_s3_bucket" "static_assets" {
   bucket = "mycompany-static-assets-${random_id.suffix.hex}"
-  tags   = { Service = "web", Owner = "appdev", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "static_assets" {
@@ -720,7 +708,6 @@ resource "aws_s3_bucket_logging" "static_assets" {
 
 resource "aws_s3_bucket" "media" {
   bucket = "mycompany-media-${random_id.suffix.hex}"
-  tags   = { Service = "media", Owner = "appdev", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "media" {
@@ -781,7 +768,6 @@ resource "aws_s3_bucket_logging" "media" {
 
 resource "aws_s3_bucket" "data_lake" {
   bucket = "mycompany-data-lake-${random_id.suffix.hex}"
-  tags   = { Service = "data", Owner = "appdev", Environment = "Prod" }
 }
 
 resource "aws_s3_bucket_versioning" "data_lake" {
